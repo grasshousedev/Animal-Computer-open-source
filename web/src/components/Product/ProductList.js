@@ -282,76 +282,77 @@ const ProductList = (props) => {
           })
         })
     }
+      getSpecialProducts();
 
-    const getProducts = () => {
-      let products = null
-      let count = 1
-      let next = null
-      let previous = null
-      if (Object.keys(state.filters).length > 0) {
-        let params = {
-          processors: [],
-          screenSizes: [],
-          categories: [],
-          brands: [],
-        }
-        for (const key in state.filters) {
-          if (state.filters[key] !== false) {
-            if (product_type === "Laptop") {
-              if (state.list.processors.includes(key)) {
-                params.processors.push(key)
-              } else if (state.list.screenSizes.includes(key)) {
-                params.screenSizes.push(key)
-              } else {
-                params.brands.push(key)
-              }
-            } else {
-              if (state.list.categories.includes(key)) {
-                params.categories.push(key)
-              } else {
-                params.brands.push(key)
-              }
-            }
-          } else {
-            delete state.filters[key]
-          }
-        }
-        setState({
-          ...state,
-          loading: true,
-        })
-        if (_.isEmpty(state.filters)) {
-          getSpecialProducts()
-        } else {
-          productApi
-            .get(filterURL, {
-              params: {
-                ...params,
-                ordering: state.sort,
-              },
-            })
-            .then((response) => {
-              products = response.data.results
-              count = Math.round(response.data.count / 10)
-              next = response.data.next
-              previous = response.data.previous
-              setState({
-                ...state,
-                products: products,
-                count: count,
-                next: next,
-                previous: previous,
-                loading: false,
-              })
-            })
-            .catch((error) => setState({ ...state, loading: false }))
-        }
-      } else {
-        getSpecialProducts()
-      }
-    }
+    // const getProducts = () => {
+    //   let products = null
+    //   let count = 1
+    //   let next = null
+    //   let previous = null
+    //   if (Object.keys(state.filters).length > 0) {
+    //     let params = {
+    //       processors: [],
+    //       screenSizes: [],
+    //       categories: [],
+    //       brands: [],
+    //     }
+    //     for (const key in state.filters) {
+    //       if (state.filters[key] !== false) {
+    //         if (product_type === "Laptop") {
+    //           if (state.list.processors.includes(key)) {
+    //             params.processors.push(key)
+    //           } else if (state.list.screenSizes.includes(key)) {
+    //             params.screenSizes.push(key)
+    //           } else {
+    //             params.brands.push(key)
+    //           }
+    //         } else {
+    //           if (state.list.categories.includes(key)) {
+    //             params.categories.push(key)
+    //           } else {
+    //             params.brands.push(key)
+    //           }
+    //         }
+    //       } else {
+    //         delete state.filters[key]
+    //       }
+    //     }
+    //     setState({
+    //       ...state,
+    //       loading: true,
+    //     })
+    //     if (_.isEmpty(state.filters)) {
+    //       getSpecialProducts()
+    //     } else {
+    //       productApi
+    //         .get(filterURL, {
+    //           params: {
+    //             ...params,
+    //             ordering: state.sort,
+    //           },
+    //         })
+    //         .then((response) => {
+    //           products = response.data.results
+    //           count = Math.round(response.data.count / 10)
+    //           next = response.data.next
+    //           previous = response.data.previous
+    //           setState({
+    //             ...state,
+    //             products: products,
+    //             count: count,
+    //             next: next,
+    //             previous: previous,
+    //             loading: false,
+    //           })
+    //         })
+    //         .catch((error) => setState({ ...state, loading: false }))
+    //     }
+    //   } else {
+    //     getSpecialProducts()
+    //   }
+    // }
 
-    getProducts()
+    // getProducts()
 
     return () => {
       ac.abort()
