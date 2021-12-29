@@ -359,11 +359,11 @@ const ProductList = (props) => {
   }, [state.filters, state.sort])
 
   const generateCards = () => {
-    if (state.products.length > 0) {
-      return state.products.map((product) => {
+    if (state?.products?.length > 0) {
+      return state?.products?.map((product) => {
         return (
           <Grid
-            key={product.id}
+            key={product._id}
             item
             align="center"
             xs={12}
@@ -456,7 +456,7 @@ const ProductList = (props) => {
             </Box>
           </Grid>
           <Grid item xs={12} md={12} lg={9}>
-            {state.products.length > 0 ? (
+            {state?.products?.length > 0 ? (
               <React.Fragment>
                 <Grid container spacing={4} justify="flex-end">
                   {/* <Grid item xs={12} md={6} lg={4}>

@@ -6,6 +6,7 @@ import { getCart } from "../../cartLocal"
 import SideDrawer from "./SideDrawer"
 import NavList from "./NavList"
 import Search from "./Search"
+import weblogo from "../../logo.png"
 
 import { makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
@@ -82,7 +83,7 @@ const Nav = () => {
               <img
                 className={classes.logo}
                 alt="Site logo"
-                src="/static/assets/logo.png"
+                src={weblogo}
               />
               <div className={classes.div}>
                 <Typography
