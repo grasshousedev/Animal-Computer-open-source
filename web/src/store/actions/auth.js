@@ -85,8 +85,8 @@ export const authLogin = (email, password, from) => (dispatch) => {
     )
     .then((res) => {
       // console.log(res.data);
+      window.scrollTo(0, 0);
       const token = res.data;
-
       dispatch(authSuccess(token));
       // const token = res.data.key;
       // localStorage.setItem("token", token);
@@ -105,7 +105,7 @@ export const authLogin = (email, password, from) => (dispatch) => {
     })
     .catch((err) => {
       window.scrollTo(0, 0);
-      console.log(err.response.data);
+      // console.log(err.response.data);
       dispatch(authFail(err));
     });
 };
@@ -136,6 +136,7 @@ export const authSignup =
         seller: seller,
       })
       .then((res) => {
+        window.scrollTo(0, 0);
         // console.log(res.data);
         // const token = res.data.key;
         // localStorage.setItem("token", token);

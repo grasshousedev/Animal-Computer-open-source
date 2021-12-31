@@ -87,23 +87,17 @@ const BuyerOrders = () => {
                   <TableCell align="left">
                     {item.arrayOfCart
                       .filter((element) => element.authorId === token.id)
-                      .map((params) => {
-                        return `${params.title}, `;
-                      })}
+                      .map((params) => `${params.title}, `)}
                   </TableCell>
                   <TableCell align="left">
                     {item.arrayOfCart
                       .filter((element) => element.authorId === token.id)
-                      .map((params) => {
-                        return `${params.quantity}, `;
-                      })}
+                      .map((params) => `${params.quantity}, `)}
                   </TableCell>
                   <TableCell align="left">
                     {item.arrayOfCart
                       .filter((element) => element.authorId === token.id)
-                      .map((params) => {
-                        return `${params.price} $ `;
-                      })}
+                      .map((params) => `${params.price} $ `)}
                   </TableCell>
                   <TableCell align="left">
                     <strong>{item.status}</strong>

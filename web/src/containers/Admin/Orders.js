@@ -183,7 +183,7 @@ export default function Orders({ state, setState }) {
             <TableCell align="left">{order.id}</TableCell>
             <TableCell align="left">{`${order.user.first_name} ${order.user.last_name}`}</TableCell>
             <TableCell align="left">{date}</TableCell>
-            <TableCell align="left">{order.total} AED</TableCell>
+            <TableCell align="left">{order.total} $</TableCell>
             <TableCell align="left">{order.status}</TableCell>
           </TableRow>
         )

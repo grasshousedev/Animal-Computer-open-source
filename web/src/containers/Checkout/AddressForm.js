@@ -111,53 +111,53 @@ export default function AddressForm() {
       // obj[element.authorId] = element.authorId;
       // console.log(obj);
     // });
-    axios
-      .post(
-        `${baseURL}/api/v1/post/order`,
-        {
-          deliveryAddress: deliveryAddress,
-          firstName: firstName,
-          googleLocation: googleLocation,
-          lastName: lastName,
-          phoneNumber: phoneNumber,
-          total: total,
-          arrayOfCart: cart,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((result) => {
-        console.log(result.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios
+    //   .post(
+    //     `${baseURL}/api/v1/post/order`,
+    //     {
+    //       deliveryAddress: deliveryAddress,
+    //       firstName: firstName,
+    //       googleLocation: googleLocation,
+    //       lastName: lastName,
+    //       phoneNumber: phoneNumber,
+    //       total: total,
+    //       arrayOfCart: cart,
+    //     },
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    //   .then((result) => {
+    //     console.log(result.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
-    // alert(JSON.stringify(values));
-    // console.log(total);
-    axios
-      .post(
-        `${baseURL}/api/v1/paypal`,
-        {
-          price: total,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then(async (result) => {
-        // console.log(result);
-        if (result) {
-          console.log(result);
-          await localStorage.removeItem("cart")
-          const json = await result.data.link;
-          window.location.assign(json);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // // alert(JSON.stringify(values));
+    // // console.log(total);
+    // axios
+    //   .post(
+    //     `${baseURL}/api/v1/paypal`,
+    //     {
+    //       price: total,
+    //     },
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    //   .then(async (result) => {
+    //     // console.log(result);
+    //     if (result) {
+    //       console.log(result);
+    //       await localStorage.removeItem("cart")
+    //       const json = await result.data.link;
+    //       window.location.assign(json);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (
@@ -269,8 +269,10 @@ export default function AddressForm() {
                   variant="contained"
                   color="primary"
                   className={buttonClasses.button}
+                  disabled={true}
                 >
-                  submit
+
+                  checkout
                 </Button>
               </div>
             </Grid>

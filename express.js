@@ -76,7 +76,7 @@ const signUpUser = mongoose.model("signup users", {
     lowercase: true,
   },
   password: String,
-  phoneNumber: Number,
+  phoneNumber: String,
   address: String,
   seller: Boolean,
 
@@ -154,7 +154,7 @@ app.post(
       .withMessage("Last Name should be at least of 3 characters"),
     body("email").isEmail().withMessage("Please type a valid email"),
     body("phoneNumber")
-      .isLength({ min: 11 })
+      .isLength({ min: 10 })
       .withMessage("Phone Number should be 11 integers long"),
     body("address")
       .isLength({ min: 18 })
@@ -190,6 +190,24 @@ app.post(
       password2,
       seller,
     } = req.body;
+    // console.log( {
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   phoneNumber,
+    //   address,
+    //   password2,
+    //   seller,
+    // });
+    // res.send( {
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   phoneNumber,
+    //   address,
+    //   password2,
+    //   seller,
+    // })
 
     signUpUser.findOne({ email: email }, async (err, user) => {
       if (err) {
@@ -216,8 +234,8 @@ app.post(
               return res.send("New Account Created");
             })
             .catch((err) => {
-              // console.log(err);
-              return res.status(402).send("Fail in creating user account");
+              console.log(err);
+              res.status(402).send("Fail in creating user account");
             });
         }
       }
@@ -286,6 +304,23 @@ app.post(
     });
   }
 );
+
+app.get("/api/v1/search/products", (req, res) => {
+  console.log(req.query.search);
+  sellProduct
+    // .find({ title: { $regex: `/${req.query.search}/i` } })
+    .find({ title: { $regex: req.query.search, $options: "i" } })
+    .then((result) => {
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        res.status(400).send("No Product Found");
+      }
+    })
+    .catch((err) => {
+      res.status(400).send("Server Error");
+    });
+});
 
 app.get("/api/v1/special/products", (req, res) => {
   // console.log('====================================');
@@ -698,11 +733,114 @@ app.get("/api/v1/getsellerproducts", (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+app.post("/api/v1/user/update", (req, res) => {
+  try {
+    // console.log(req.body);
+    signUpUser
+      .findByIdAndUpdate(req.body._decoded.id, {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phoneNumber: req.body.phoneNumber,
+        address: req.body.address,
+      })
+      .then((result) => {
+        if (result) {
+          // console.log(result);
+          // res.send(result);
+          // As i know that it is given me the previous object which is updated so finding once againz
+          signUpUser
+            .findOne({ _id: req.body._decoded.id })
+            .then((data) => {
+              if (data) {
+                res.send(data);
+              } else {
+                res.status(500).send("Server Error");
+              }
+            })
+            .catch((err) => {
+              res.status(500).send("Server Error");
+            });
+        } else {
+          res.status(500).send("Server Error");
+        }
+      })
+      .catch((err) => {
+        res.status(500).send("Server Error");
+      });
+    // console.log(req.body);
+  } catch (error) {
+    res.status(500).send("Server Error");
+  }
+});
+app.post("/api/v1/user/passwordupdate", (req, res) => {
+  try {
+    if (req.body.new_password1 !== req.body.new_password2) {
+      return res.status(401).send("Both new password should match");
+    }
+    // console.log(req.body);
+    signUpUser
+      .findOne({ _id: req.body._decoded.id })
+      .then(async (user) => {
+        if (user) {
+          bcrypt.compare(
+            req.body.old_password.toString(),
+            user.password,
+            async (err, result) => {
+              if (err) {
+                res.status(500).send("Server Error");
+              } else {
+                if (result) {
+                  // console.log(result);
+                  const salt = await bcrypt.genSalt(10);
+                  const newHashPass = await bcrypt.hash(
+                    req.body.new_password1,
+                    salt
+                  );
+                  signUpUser.findByIdAndUpdate(
+                    req.body._decoded.id,
+                    {
+                      password: newHashPass,
+                    },
+                    (err, user) => {
+                      if (err) {
+                        res.status(500).send("Server Error");
+                      } else {
+                        if (user) {
+                          // console.log(user);
+                          res.send(user);
+                        } else {
+                          res.status(403).send("can't update new password");
+                        }
+                      }
+                    }
+                  );
+                } else {
+                  // console.log(result, "wrong password");
+                  res.status(403).send("Wrong password");
+                }
+              }
+            }
+          );
+        } else {
+          // console.log("user not found");
+          res.status(402).send("user not found");
+        }
+      })
+      .catch((err) => {
+        // console.log(err);
+        res.status(500).send("Server Error");
+      });
+  } catch (error) {
+    // console.log(error);
+    res.status(500).send("Server Error");
+  }
+});
+
 app.use("/**", (req, res) => {
   // res.redirect("/")
   res.sendFile(path.join(__dirname, "./web/build/index.html"));
 });
-
 
 app.listen(port, () =>
   console.log(`Example app listening on port http://localhost:${port}`)

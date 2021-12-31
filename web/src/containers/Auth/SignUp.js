@@ -70,6 +70,7 @@ const MyTextField = ({ label, autoComplete, autoFocus, type, ...props }) => {
       helperText={errorText}
       error={!!errorText}
       type={type}
+      required
     />
   );
 };
@@ -89,7 +90,7 @@ const validationSchema = Yup.object({
     .max(254, "Can't be more than 254 characters"),
   phoneNumber: Yup.string()
     .required("Required")
-    .min(11, "Phone number should be atleast of 11 numbers "),
+    .min(10, "Phone number should be atleast of 11 numbers "),
   address: Yup.string()
     .required("Required")
     .min(18, "Can't be less than 18 characters"),
@@ -217,10 +218,10 @@ const SignUpForm = ({ location }) => {
                   </Grid>
                   <Grid item xs={12}>
                     <MyTextField
-                      type="tel"
                       id="phoneNumber"
                       label="Phone Number"
                       name="phoneNumber"
+                      type="number"
                       autoComplete="phoneNumber"
                     />
                   </Grid>
@@ -270,12 +271,12 @@ const SignUpForm = ({ location }) => {
                     "Sign Up"
                   )}
                 </Button>
-                <Google
+                {/* <Google
                   from={from}
                   setError={setError}
                   remember={values.remember}
                   error={error}
-                />
+                /> */}
                 {error && <FormHelperText error={true}>{error}</FormHelperText>}
                 <div className={classes.div}>
                   <Grid container justify="center">

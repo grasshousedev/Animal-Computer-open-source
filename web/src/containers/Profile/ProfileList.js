@@ -46,9 +46,9 @@ const ProfileList = ({state, setState}) => {
             <ListItem button onClick={() => setState({ ...state, option: 'password', display: 'Change Password'})}>
                 <ListItemText className={classes.linkText} primary="Change Password" />
             </ListItem>
-            <ListItem button onClick={() => setState({ ...state, option: 'address', display: 'Manage Addresses'})}>
+            {/* <ListItem button onClick={() => setState({ ...state, option: 'address', display: 'Manage Addresses'})}>
                 <ListItemText className={classes.linkText} primary="Manage Addresses" />
-            </ListItem>
+            </ListItem> */}
         </React.Fragment>
     )
 }

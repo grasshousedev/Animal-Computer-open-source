@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import { searchURL } from "../../constants"
-import { store } from "../../apis/store"
+import { searchURL } from "../../constants";
+import { store } from "../../apis/store";
 
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemText from "@material-ui/core/ListItemText"
-import Typography from "@material-ui/core/Typography"
-import InputBase from "@material-ui/core/InputBase"
-import SearchIcon from "@material-ui/icons/Search"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import { fade, makeStyles } from "@material-ui/core/styles"
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { fade, makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,23 +81,23 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: "column",
     },
   },
-}))
+}));
 
 const Search = ({ setState, state, anchor }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [result, setResult] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [term, setTerm] = useState("")
+  const [result, setResult] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [term, setTerm] = useState("");
   const [resultStyle, setResultStyle] = useState({
     position: "absolute",
     display: "none",
-  })
+  });
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (term) {
-        setLoading(true)
+        setLoading(true);
         store
           .get(searchURL, {
             params: {
@@ -105,40 +105,40 @@ const Search = ({ setState, state, anchor }) => {
             },
           })
           .then((response) => {
-            const results = response.data.results
+            const results = response.data;
             if (results.length > 0) {
-              setResult(results)
+              setResult(results);
             } else {
-              setResult(null)
+              setResult(null);
             }
-            setLoading(false)
+            setLoading(false);
           })
           .catch((error) => {
-            setLoading(false)
-            setResult(null)
-          })
+            setLoading(false);
+            setResult(null);
+          });
       } else {
-        setLoading(false)
-        setResult([])
+        setLoading(false);
+        setResult([]);
       }
-    }, 500)
+    }, 500);
 
     return () => {
-      clearTimeout(timeoutId)
-    }
-  }, [term])
+      clearTimeout(timeoutId);
+    };
+  }, [term]);
 
   const renderListItem = (item) => {
     return (
       <React.Fragment>
         <ListItem
           component={Link}
-          to={`/product/${item.slug}/`}
+          to={`/product/${item._id}/`}
           className={classes.item}
           button
         >
           <div className={classes.result}>
-            <img src={item.images[0].image} height="32px" alt="search result" />
+            <img src={item.imageURL1} height="32px" alt="search result" />
             <div style={{ display: "inline-block", paddingLeft: "10px" }}>
               <div className={classes.resultContent}>
                 <Typography
@@ -154,7 +154,7 @@ const Search = ({ setState, state, anchor }) => {
                   style={{ color: "black" }}
                 >
                   Price:{" "}
-                  {item.discount_price ? item.discount_price : item.price} AED
+                  {item?.discount_price ? item.discount_price : item.price} $
                 </Typography>
               </div>
             </div>
@@ -170,25 +170,27 @@ const Search = ({ setState, state, anchor }) => {
           />
         </div>
       </React.Fragment>
-    )
-  }
+    );
+  };
 
   const renderResults = () => {
     if (result !== null) {
       if (result.length > 1) {
         return (
           <List className={classes.root}>
-            {result.map((item) => {
+            {result?.map((item) => {
               return (
-                <React.Fragment key={item.id}>
+                <React.Fragment key={item._id}>
                   {renderListItem(item)}
                 </React.Fragment>
-              )
+              );
             })}
           </List>
-        )
+        );
       } else if (result.length !== 0) {
-        return <List className={classes.root}>{renderListItem(result[0])}</List>
+        return (
+          <List className={classes.root}>{renderListItem(result[0])}</List>
+        );
       }
     } else {
       return (
@@ -221,21 +223,21 @@ const Search = ({ setState, state, anchor }) => {
             )}
           </ListItem>
         </List>
-      )
+      );
     }
-  }
+  };
 
   const handleBlur = () => {
     setTimeout(() => {
       setResultStyle({
         ...resultStyle,
         display: "none",
-      })
+      });
       if (setState) {
-        setState({ ...state, [anchor]: false })
+        setState({ ...state, [anchor]: false });
       }
-    }, 500)
-  }
+    }, 500);
+  };
 
   return (
     <div className={classes.search}>
@@ -270,7 +272,7 @@ const Search = ({ setState, state, anchor }) => {
         {renderResults()}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

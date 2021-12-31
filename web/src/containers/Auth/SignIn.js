@@ -73,6 +73,7 @@ const MyTextfield = ({ label, autoComplete, autoFocus, type, ...props }) => {
       helperText={errorText}
       error={!!errorText}
       type={type}
+      required
     />
   );
 };
@@ -172,12 +173,12 @@ const SignInForm = ({ location }) => {
                     "Sign In"
                   )}
                 </Button>
-                <Google
+                {/* <Google
                   from={from}
                   remember={values.remember}
                   setError={setError}
                   error={error}
-                />
+                /> */}
                 {error && <FormHelperText error={true}>{error}</FormHelperText>}
                 <div className={classes.div}>
                   <Grid container spacing={6}>

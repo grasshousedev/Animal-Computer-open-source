@@ -88,15 +88,15 @@ export default function UserProfile() {
             <Edit state={state} setState={setState} />
           </React.Fragment>
         );
-      case "address":
-        return (
-          <React.Fragment>
-            {/* <Address user={state.user} /> */}
-            <Typography variant="h5" component="h5" >We Have Your Address</Typography>
-          </React.Fragment>
-        );
+      // case "address":
+      //   return (
+      //     <React.Fragment>
+      //       {/* <Address user={state.user} /> */}
+      //       <Typography variant="h5" component="h5" >We Have Your Address</Typography>
+      //     </React.Fragment>
+      //   );
       case "password":
-        return (
+        return (  
           <React.Fragment>
             <Password state={state} />
           </React.Fragment>

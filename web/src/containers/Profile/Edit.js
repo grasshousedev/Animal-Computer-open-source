@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react"
-import { authStore } from "../../apis/store"
-import { updateUserURL } from "../../constants"
+import React, { useState, useEffect } from "react";
+import { authStore } from "../../apis/store";
+import { updateUserURL } from "../../constants";
 
-import Grid from "@material-ui/core/Grid"
-import TextField from "@material-ui/core/TextField"
-import Button from "@material-ui/core/Button"
-import { makeStyles } from "@material-ui/core/styles"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import Typography from "@material-ui/core/Typography"
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -17,55 +17,70 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}))
+}));
 
 const Edit = ({ state, setState }) => {
-  const classes = useStyles()
-
+  const classes = useStyles();
   const [details, setDetails] = useState({
     saving: false,
     success: null,
     error: null,
     formData: {
-      first_name: "",
-      last_name: "",
-      phone_number: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      address: "",
     },
-  })
+  });
 
-  const { formData } = details
+  const { formData } = details;
 
   useEffect(() => {
+    // console.log(state)
     setDetails({
       ...details,
       formData: {
         id: state.user.id || "",
-        first_name: state.user.first_name || "",
-        last_name: state.user.last_name || "",
-        phone_number: state.user.phone_number || "",
+        firstName: state.user.firstName || "",
+        lastName: state.user.lastName || "",
+        phoneNumber: state.user.phoneNumber || "",
+        address: state.user.address || "",
       },
-    })
-  }, [])
+    });
+    // eslint-disable-next-line
+  }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    // console.log(details.formData);
     setDetails({
       ...details,
       saving: true,
-    })
+    });
     authStore
-      .patch(updateUserURL(state.user.id), details.formData)
+      .post(
+        updateUserURL,
+        {
+          firstName: details.formData.firstName,
+          lastName: details.formData.lastName,
+          phoneNumber: details.formData.phoneNumber,
+          address: details.formData.address,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
-        console.log(response)
+        // console.log(response.data);
         setState({
           option: "account",
           user: { ...response.data },
-        })
+        });
         setDetails({
           ...details,
           success: true,
           saving: false,
-        })
+        });
       })
       .catch((error) => {
         setDetails({
@@ -73,21 +88,21 @@ const Edit = ({ state, setState }) => {
           success: false,
           saving: false,
           error: true,
-        })
-      })
-  }
+        });
+      });
+  };
 
   const handleChange = (e) => {
-    const { formData } = details
+    const { formData } = details;
     const updatedFormData = {
       ...formData,
       [e.target.name]: e.target.value,
-    }
+    };
     setDetails({
       ...details,
       formData: updatedFormData,
-    })
-  }
+    });
+  };
 
   return (
     <React.Fragment>
@@ -107,37 +122,54 @@ const Edit = ({ state, setState }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               id="firstName"
-              name="first_name"
+              name="firstName"
               label="First name"
               onChange={(e) => {
-                handleChange(e)
+                handleChange(e);
               }}
-              value={formData.first_name}
+              value={formData.firstName}
               fullWidth
+              required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               id="lastName"
-              name="last_name"
+              name="lastName"
               label="Last name"
               onChange={(e) => {
-                handleChange(e)
+                handleChange(e);
               }}
-              value={formData.last_name}
+              value={formData.lastName}
               fullWidth
+              required
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              type="number"
               id="phoneNumber"
-              name="phone_number"
+              name="phoneNumber"
               label="Phone Number"
               onChange={(e) => {
-                handleChange(e)
+                handleChange(e);
               }}
-              value={formData.phone_number}
+              value={formData.phoneNumber}
               fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="address"
+              name="address"
+              label="Address"
+              onChange={(e) => {
+                handleChange(e);
+              }}
+              value={formData.address}
+              fullWidth
+              required
             />
           </Grid>
         </Grid>
@@ -156,7 +188,7 @@ const Edit = ({ state, setState }) => {
         </Button>
       </form>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Edit
+export default Edit;
