@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Cart = ({ onDismiss }) => {
   const classes = useStyles();
-  // let cart = useSelector((state) => state.cart)
+  let carts = useSelector((state) => state);
   const cart = getCart();
   const [state, setState] = useState({
     error: false,
@@ -104,8 +104,8 @@ const Cart = ({ onDismiss }) => {
     //       });
     //     });
     // } else {
-      removeCartItem(id);
-      dispatch(fetchCart());
+    removeCartItem(id);
+    dispatch(fetchCart());
     // }
   };
 
@@ -159,13 +159,13 @@ const Cart = ({ onDismiss }) => {
     //       setState({ error: true, message: err });
     //     });
     // } else {
-      updateQuantity(slug, config, quantity);
-      dispatch(fetchCart());
+    updateQuantity(slug, config, quantity);
+    dispatch(fetchCart());
     // }
   };
 
   const handleChange = (e, slug, config) => {
-    const value = e.target.value;
+    let value = e.target.value;
     quantityUpdate(slug, value, config);
   };
 
@@ -255,7 +255,7 @@ const Cart = ({ onDismiss }) => {
   //                 </TableCell>
   //               </TableRow>
   //             );
-  //           })} 
+  //           })}
   //           <TableRow>
   //             <TableCell align="right" />
   //             <TableCell align="right" style={{ fontWeight: 500 }}>
@@ -312,7 +312,7 @@ const Cart = ({ onDismiss }) => {
     //   }
     //   // Local cart
     // } else
-     if (cart !== null && cart.length > 0) {
+    if (cart !== null && cart.length > 0) {
       let total = 0;
       cart.forEach((item) => (total += getPrice(item.quantity, item.price)));
       return (
@@ -351,9 +351,16 @@ const Cart = ({ onDismiss }) => {
                       </TableCell>
                       <TableCell align="right">
                         <TextField
-                          type="number"
+                          // type="number"
+                          // inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                          inputProps={{
+                            step: 1,
+                            min: 1,
+                            max: 99999,
+                            type: "number",
+                          }}
                           onChange={(e) => {
-                            const config = order_item.config;
+                            let config = order_item.config;
                             if (config) {
                               handleChange(e, order_item.slug, config.id);
                             } else {
@@ -364,7 +371,7 @@ const Cart = ({ onDismiss }) => {
                           size="small"
                         />
                       </TableCell>
-                      <TableCell align="right">{order_item.price}</TableCell>
+                      <TableCell align="right">{order_item.price} $</TableCell>
                       <TableCell align="right">
                         <IconButton
                           onClick={(e) => handleRemove(order_item.id)}
@@ -380,7 +387,7 @@ const Cart = ({ onDismiss }) => {
                   <TableCell align="right" style={{ fontWeight: 500 }}>
                     Total
                   </TableCell>
-                  <TableCell align="right">{total}</TableCell>
+                  <TableCell align="right">{total} $</TableCell>
                   <TableCell align="right" />
                 </TableRow>
               </TableBody>

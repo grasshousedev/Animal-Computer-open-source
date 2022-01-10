@@ -460,12 +460,12 @@ export default function Product(props) {
                 <Rating
                   name="read-only"
                   // value={state.product.rating.average}
-                  value={0}
+                  value={5}
                   readOnly
                   precision={0.5}
                 />
                 {/* <span>({state.product.rating.length})</span> */}
-                <span>({0})</span>
+                <span>({5})</span>
               </ListItem>
               <ListItem>
                 <ListItemText
