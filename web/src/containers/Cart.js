@@ -360,11 +360,11 @@ const Cart = ({ onDismiss }) => {
                             type: "number",
                           }}
                           onChange={(e) => {
-                            if (e.target.value <= 0) {
-                              return (e.target.value = 1);
+                            if (e.target.value < 0) {
+                              e.target.value = 1;
                             }
                             if (e.target.value > 50) {
-                              return (e.target.value = 50);
+                              e.target.value = 50;
                             }
                             let config = order_item.config;
                             if (config) {
