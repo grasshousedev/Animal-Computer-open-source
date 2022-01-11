@@ -276,6 +276,9 @@ function LaptopForm() {
                 id="productType"
                 name="productType"
                 label="Product Type"
+                InputProps={{
+                  readOnly: true,
+                }}      
                 variant="outlined"
                 value={formik.values.productType}
                 onChange={formik.handleChange}

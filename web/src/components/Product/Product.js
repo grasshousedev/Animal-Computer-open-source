@@ -167,7 +167,7 @@ export default function Product(props) {
       return (
         <img
           className={classes.img}
-          src={"/static/assets/image-missing-icon.png"}
+          src={"https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0="}
           alt="missing product"
         />
       );
@@ -315,10 +315,10 @@ export default function Product(props) {
               >
                 Price:{" "}
               </Box>{" "}
-              {discountPrice} AED &nbsp;
+              {discountPrice} $ &nbsp;
             </Typography>
             <Typography variant="body1" className={classes.discount}>
-              {price} AED
+              {price} $
             </Typography>
           </div>
         ) : (
@@ -330,7 +330,7 @@ export default function Product(props) {
             >
               Price:{" "}
             </Box>
-            {price} AED
+            {price} $
           </Typography>
         )}
       </React.Fragment>
@@ -436,7 +436,7 @@ export default function Product(props) {
                 <ListItemText
                   primary={
                     <Typography variant="h2" component="h1">
-                      {state.product.title}
+                      {state.product.title} &#40;{state.product.brand}&#41;
                     </Typography>
                   }
                 />
@@ -528,15 +528,19 @@ export default function Product(props) {
             </List>
           </Grid>
         </Grid>
-        <Box mt={4}>
-          <ProductTab
-            // productID={state.product.id}
-            productID={state.option}
-            productTitle={state.product.title}
-            description={state.product.description}
-            manufacturer_url={state.product.manufacturer_url}
-          />
-        </Box>
+        {state.product.productType === "Laptop" ? (
+          <Box mt={4}>
+            <ProductTab
+              // productID={state.product.id}
+              productID={state.option}
+              productTitle={state.product.title}
+              description={state.product.description}
+              manufacturer_url={state.product.manufacturer_url}
+            />
+          </Box>
+        ) : (
+          ""
+        )}
       </React.Fragment>
     );
   };

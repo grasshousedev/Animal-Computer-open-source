@@ -106,7 +106,7 @@ export default function ProductCard({ product }) {
             <CardContent>
               <div className={classes.media}>
                 <img
-                alt="ProductImg"
+                  alt="ProductImg"
                   src={product.imageURL1}
                   className={classes.image}
                 />
@@ -114,49 +114,95 @@ export default function ProductCard({ product }) {
               <Typography gutterBottom variant="h6" component="h2">
                 <span className={classes.title}>{product.title}</span>
               </Typography>
-              <div className={classes.cardContent}>
-                <div className={classes.description}>
-                  <Truncate
-                    lines={2}
-                    style={{ textAlign: "left" }}
-                    ellipsis={<span>...</span>}
-                  >
-                    {product.description}
-                  </Truncate>
-                </div>
-                {product.productType === "Laptop" ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <ul
+              {product.productType === "Laptop" ? (
+                <div className={classes.cardContent}>
+                  <div className={classes.description}>
+                    <Truncate
+                      lines={2}
+                      style={{ textAlign: "left" }}
+                      ellipsis={<span>...</span>}
+                    >
+                      {product.description}
+                    </Truncate>
+                  </div>
+                  {product.productType === "Laptop" ? (
+                    <div
                       style={{
-                        listStyle: "square",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "flex-start",
                         justifyContent: "flex-start",
-                        paddingLeft: 20,
-                        textAlign: "left",
                       }}
                     >
-                      <li>{`${product.processorName} ${product.processorDetail_}`}</li>
-                      <li>{`${product.display} ${product.displayDetails}`}</li>
+                      <ul
+                        style={{
+                          listStyle: "square",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                          justifyContent: "flex-start",
+                          paddingLeft: 20,
+                          textAlign: "left",
+                        }}
+                      >
+                        <li>{`${product.processorName} ${product.processorDetail}`}</li>
+                        <li>{`${product.display} ${product.displayDetails}`}</li>
 
-                      <React.Fragment>
-                        <li>{product.ram}</li>
-                        <li>{product.storage}</li>
-                      </React.Fragment>
-                    </ul>
+                        <React.Fragment>
+                          <li>{product.ram}</li>
+                          <li>{product.storage}</li>
+                        </React.Fragment>
+                      </ul>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <div className={classes.description}>
+                    <Truncate
+                      lines={2}
+                      style={{ textAlign: "left" }}
+                      ellipsis={<span>...</span>}
+                    >
+                      {product.description}
+                    </Truncate>
                   </div>
-                ) : (
-                  ""
-                )}
-              </div>
+                  {product.productType === "Laptop" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <ul
+                        style={{
+                          listStyle: "square",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                          justifyContent: "flex-start",
+                          paddingLeft: 20,
+                          textAlign: "left",
+                        }}
+                      >
+                        <li>{`${product.processorName} ${product.processorDetail}`}</li>
+                        <li>{`${product.display} ${product.displayDetails}`}</li>
+
+                        <React.Fragment>
+                          <li>{product.ram}</li>
+                          <li>{product.storage}</li>
+                        </React.Fragment>
+                      </ul>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              )}
             </CardContent>
           </CardActionArea>
         </Link>

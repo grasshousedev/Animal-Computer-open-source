@@ -22,6 +22,7 @@ import Lists from "./Lists";
 import BuyerOrders from "./BuyerOrders";
 import LaptopForm from "./LaptopForm/LaptopForm";
 import SellerProduct from "./SellerProduct";
+import AccessoryForm from "./Accessory/AccessoryForm";
 
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -93,9 +94,10 @@ export default function UserProfile() {
         return (
           <React.Fragment>
             {/* <Edit state={state} setState={setState} /> */}{" "}
-            <Typography variant="h5" component="h5">
+            {/* <Typography variant="h5" component="h5">
               Sell Accessories
-            </Typography>
+            </Typography> */}
+            <AccessoryForm />
           </React.Fragment>
         );
 
