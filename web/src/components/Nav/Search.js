@@ -106,6 +106,7 @@ const Search = ({ setState, state, anchor }) => {
           })
           .then((response) => {
             const results = response.data;
+            console.log(response.data);
             if (results.length > 0) {
               setResult(results);
             } else {

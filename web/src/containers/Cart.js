@@ -356,10 +356,16 @@ const Cart = ({ onDismiss }) => {
                           inputProps={{
                             step: 1,
                             min: 1,
-                            max: 99999,
+                            max: 50,
                             type: "number",
                           }}
                           onChange={(e) => {
+                            if (e.target.value <= 0) {
+                              return (e.target.value = 1);
+                            }
+                            if (e.target.value > 50) {
+                              return (e.target.value = 50);
+                            }
                             let config = order_item.config;
                             if (config) {
                               handleChange(e, order_item.slug, config.id);
