@@ -61,7 +61,8 @@ app.use(
 app.use("/", express.static(path.join(__dirname, "./web/build")));
 
 paypal.configure({
-  mode: "sandbox", //sandbox or live
+  // mode: "sandbox", //sandbox or live
+  mode: "live", //sandbox or live
   client_id: process.env.CLIENT_ID,
   client_secret: process.env.CLIENT_SECRET,
 });
@@ -531,7 +532,18 @@ app.post("/api/v1/auth/logout", (req, res) => {
 });
 app.post("/api/v1/paypal", (req, res) => {
   // console.log(req.body);
-  const { price } = req.body;
+  global.order = req.body;
+  // console.log(order);
+  // var {
+  //   deliveryAddress,
+  //   firstName,
+  //   googleLocation,
+  //   lastName,
+  //   phoneNumber,
+  //   total,
+  //   arrayOfCart,
+  // } = req.body;
+  // const { price } = req.body;
   var create_payment_json = {
     intent: "sale",
     payer: {
@@ -569,7 +581,7 @@ app.post("/api/v1/paypal", (req, res) => {
 
   paypal.payment.create(create_payment_json, function (error, payment) {
     if (error) {
-      throw error;
+      res.status(500).send("Paypal Error Occured");
     } else {
       console.log("Create Payment Response");
       console.log(payment);
@@ -603,7 +615,35 @@ app.get("/success", (req, res) => {
         //   payment: payment,
         // });
         // res.send("<h1>Payment Completed Successfully")
-        res.sendFile(path.join(__dirname, "./web/build/index.html"));
+        console.log(order);
+        try {
+          const newOrder = new orders({
+            deliveryAddress: order.deliveryAddress,
+            firstName: order.firstName,
+            googleLocation: order.googleLocation,
+            lastName: order.lastName,
+            phoneNumber: order.phoneNumber,
+            total: order.total,
+            clientId: req.body._decoded.id,
+            arrayOfCart: order.arrayOfCart,
+            status: "pending",
+          });
+          newOrder.save((err, data) => {
+            if (err) {
+              return res.status(500).send("Internal Server Error");
+            } else {
+              if (data) {
+                // return res.send(data);
+                res.sendFile(path.join(__dirname, "./web/build/index.html"));
+              } else {
+                return res.status(500).send("Data Not Found");
+              }
+            }
+          });
+        } catch (error) {
+          return res.status(500).send("Internal Server Error");
+        }
+        // res.sendFile(path.join(__dirname, "./web/build/index.html"));
         // res.send('Success');
       } else {
         res.status(400).send({
@@ -623,43 +663,43 @@ app.get("/cancel", (req, res) => {
   });
 });
 
-app.post("/api/v1/post/order", (req, res) => {
-  const {
-    deliveryAddress,
-    firstName,
-    googleLocation,
-    lastName,
-    phoneNumber,
-    total,
-    arrayOfCart,
-  } = req.body;
-  try {
-    const newOrder = new orders({
-      deliveryAddress: deliveryAddress,
-      firstName: firstName,
-      googleLocation: googleLocation,
-      lastName: lastName,
-      phoneNumber: phoneNumber,
-      total: total,
-      clientId: req.body._decoded.id,
-      arrayOfCart: arrayOfCart,
-      status: "pending",
-    });
-    newOrder.save((err, data) => {
-      if (err) {
-        return res.status(500).send("Internal Server Error");
-      } else {
-        if (data) {
-          return res.send(data);
-        } else {
-          return res.status(500).send("Data Not Found");
-        }
-      }
-    });
-  } catch (error) {
-    return res.status(500).send("Internal Server Error");
-  }
-});
+// app.post("/api/v1/post/order", (req, res) => {
+//   const {
+//     deliveryAddress,
+//     firstName,
+//     googleLocation,
+//     lastName,
+//     phoneNumber,
+//     total,
+//     arrayOfCart,
+//   } = req.body;
+//   try {
+//     const newOrder = new orders({
+//       deliveryAddress: deliveryAddress,
+//       firstName: firstName,
+//       googleLocation: googleLocation,
+//       lastName: lastName,
+//       phoneNumber: phoneNumber,
+//       total: total,
+//       clientId: req.body._decoded.id,
+//       arrayOfCart: arrayOfCart,
+//       status: "pending",
+//     });
+//     newOrder.save((err, data) => {
+//       if (err) {
+//         return res.status(500).send("Internal Server Error");
+//       } else {
+//         if (data) {
+//           return res.send(data);
+//         } else {
+//           return res.status(500).send("Data Not Found");
+//         }
+//       }
+//     });
+//   } catch (error) {
+//     return res.status(500).send("Internal Server Error");
+//   }
+// });
 
 app.get("/api/v1/user/orders", (req, res) => {
   try {
