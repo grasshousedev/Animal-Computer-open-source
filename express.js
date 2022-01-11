@@ -582,6 +582,7 @@ app.post("/api/v1/paypal", (req, res) => {
   paypal.payment.create(create_payment_json, function (error, payment) {
     if (error) {
       res.status(500).send("Paypal Error Occured");
+      console.log(error);
     } else {
       console.log("Create Payment Response");
       console.log(payment);
