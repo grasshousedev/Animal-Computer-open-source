@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { productURL } from "../../constants";
 import Truncate from "react-truncate";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -223,7 +222,6 @@ export default function ProductCard({ product }) {
         <CardActions className={classes.cardActions}>
           <ul className={classes.actions}>
             <li>
-              {/* {product.productType === "Accessory" */}
               {product.productType === "Laptop"
                 ? renderPrice(product.discountPrice, product.price)
                 : product.price.length > 0

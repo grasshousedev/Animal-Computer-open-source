@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCart, removeCartItem, updateQuantity } from "../cartLocal";
 import { fetchCart } from "../store/actions/cart";
@@ -58,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Cart = ({ onDismiss }) => {
   const classes = useStyles();
+  // It's just for real time it's rough
+  const [rough, setRough] = useState(false);
+  let carts = useSelector((state) => state);
+
   const cart = getCart();
   const [state, setState] = useState({
     error: false,
@@ -67,6 +71,11 @@ const Cart = ({ onDismiss }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (carts) {
+      setRough(!rough);
+    } else {
+      setRough(!rough);
+    }
     // eslint-disable-next-line
   }, []);
 

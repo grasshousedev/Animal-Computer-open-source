@@ -1,9 +1,8 @@
-import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import Button from "@material-ui/core/Button"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import Dialog from "@material-ui/core/Dialog"
-import { blue } from "@material-ui/core/colors"
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -61,14 +60,14 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "inset 0px 0px 0px 30px #7ac142",
     },
   },
-}))
+}));
 
 const AddedToCart = ({ open, setOpen }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <Dialog
@@ -103,7 +102,7 @@ const AddedToCart = ({ open, setOpen }) => {
         </Button>
       </div>
     </Dialog>
-  )
-}
+  );
+};
 
-export default AddedToCart
+export default AddedToCart;

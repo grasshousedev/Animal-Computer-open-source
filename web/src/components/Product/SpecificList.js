@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { store } from "../../apis/store";
 import { specialURL } from "../../constants";
 import ProductCard from "./ProductCard";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -40,7 +39,6 @@ const SpecificList = ({ label }) => {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response.data);
           setState({
             loading: false,
             products: response.data,

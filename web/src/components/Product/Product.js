@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { store, authStore } from "../../apis/store";
-import { addToCartURL } from "../../constants";
-import { fetchCart } from "../../store/actions/cart";
+import { store } from "../../apis/store";
 import { createCartItem } from "../../cartLocal";
 import BreadCrumbs from "../BreadCrumbs";
 import AlertDialog from "./AlertDialog";
@@ -11,7 +8,6 @@ import AddedToCart from "./AddedToCart";
 import Slider from "infinite-react-carousel";
 import history from "../../history";
 import Cart from "../../containers/Cart";
-
 import ProductTab from "./Tab";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -59,11 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Product(props) {
-  // console.log(props.match.params.slug);
   const classes = useStyles();
-  const dispatch = useDispatch();
-  let cart = useSelector((state) => state.cart);
-  const token = useSelector((state) => state.auth.token);
   const [state, setState] = useState({
     product: null,
     price: null,
@@ -77,8 +69,6 @@ export default function Product(props) {
   const [dialog, setDialog] = useState({
     render: false,
   });
-
-  console.log("State: ", state);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -116,7 +106,6 @@ export default function Product(props) {
           }
         })
         .catch((error) => {
-          console.log(error);
           setState({ ...state, error });
         });
     };
@@ -126,25 +115,9 @@ export default function Product(props) {
 
   useEffect(() => {
     const handleDisabled = () => {
-      if (state.product) {
-        // if (state.product.productType === "Accessory") {
-        //   state.product.quantity > 0 ? setDisabled(false) : setDisabled(true);
-        // } else
-        if (state.product.productType === "Laptop") {
-          // if (state.product.config.length > 0) {
-          //   const answer = state.product.config.find(
-          //     (element) => element.id === parseInt(state.option)
-          //   );
-          //   if (answer && answer.quantity > 0) {
-          //     setDisabled(false);
-          //   }
-          // if (state.product > 0) {
-          // const answer = state.option;
-          // if (answer && answer.quantity > 0) {
-          // if (answer > 0) {
-          if (state.option) {
-            setDisabled(false);
-          }
+      if (state?.product?.productType === "Laptop") {
+        if (state.option) {
+          setDisabled(false);
         }
       }
     };
@@ -167,7 +140,9 @@ export default function Product(props) {
       return (
         <img
           className={classes.img}
-          src={"https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0="}
+          src={
+            "https://media.istockphoto.com/vectors/no-image-vector-symbol-missing-available-icon-no-gallery-for-this-vector-id1128826884?k=20&m=1128826884&s=170667a&w=0&h=_cx7HW9R4Uc_OLLxg2PcRXno4KERpYLi5vCz-NEyhi0="
+          }
           alt="missing product"
         />
       );
@@ -218,48 +193,21 @@ export default function Product(props) {
     );
   };
 
-  // const handleChange = (e) => {
-  // const config = state.product.config.find(
-  //   (element) => element.id === parseInt(e.target.value)
-  // );
-  // setState({
-  //   ...state,
-  //   option: parseInt(e.target.value),
-  //   price: config.price,
-  //   discount_price: config.discount_price,
-  // });
-  // };
-
   const renderConfigs = () => {
     if (state.product) {
-      // if (state.product) {
       return (
         <ListItem>
           <FormControl component="fieldset">
             <FormLabel component="legend">Configurations</FormLabel>
-            <RadioGroup
-              aria-label="config"
-              name="config"
-              // value={parseInt(state.option)}
-              value={state.option}
-              // onChange={handleChange}
-            >
+            <RadioGroup aria-label="config" name="config" value={state.option}>
               {state.product.ram ? (
                 <React.Fragment>
-                  {/* {state.product.config.map((config) => { */}
-                  {/* return ( */}
                   <FormControlLabel
                     value={state.option}
-                    control={
-                      <Radio
-                      // disabled="false"
-                      />
-                    }
+                    control={<Radio />}
                     label={`${state.product.ram} RAM + ${state.product.storage} STORAGE`}
                     key={state.option}
                   />
-                  {/* ); */}
-                  {/* })} */}
                 </React.Fragment>
               ) : (
                 "Out of Stock"
@@ -268,31 +216,6 @@ export default function Product(props) {
           </FormControl>
         </ListItem>
       );
-      // }
-      // else {
-      //   const config = state.product.config[0];
-      //   return (
-      //     <ListItem>
-      //       <FormControl component="fieldset">
-      //         <FormLabel component="legend">Configurations</FormLabel>
-      //         <RadioGroup
-      //           aria-label="config"
-      //           name="config"
-      //           value={state.option}
-      //           onChange={handleChange}
-      //         >
-      //           <FormControlLabel
-      //             value={config.id}
-      //             control={
-      //               <Radio disabled={config.quantity === 0 ? true : false} />
-      //             }
-      //             label={`${config.ram} RAM + ${config.storage} STORAGE`}
-      //           />
-      //         </RadioGroup>
-      //       </FormControl>
-      //     </ListItem>
-      //   );
-      // }
     } else {
       return;
     }
@@ -365,33 +288,6 @@ export default function Product(props) {
   };
 
   const addToCart = (slug) => {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    // if (token) {
-    // authStore
-    //   .post(addToCartURL, { slug, config: state.option })
-    //   .then((res) => {
-    //     dispatch(fetchCart());
-    // if (window.screen.width > 960) {
-    //   setDialog({
-    //     render: true,
-    //   });
-    // } else {
-    //   setDialogOpen(true);
-    // }
-    // })
-    // .catch((err) => {
-    // if (
-    //   cart !== null &&
-    //   cart.shoppingCart !== undefined &&
-    //   cart.shoppingCart.items.length > 0
-    // ) {
-    //   setDialog({ render: true });
-    // }
-    // setState({ ...state, error: err });
-    // setOpen(true);
-    // });
-    // } else {
     createCartItem(state.product, state.option);
     if (window.screen.width > 960) {
       setDialog({
@@ -400,8 +296,6 @@ export default function Product(props) {
     } else {
       setDialogOpen(true);
     }
-    // dispatch(fetchCart());
-    // }
   };
 
   const handleClose = (event, reason) => {
@@ -441,30 +335,8 @@ export default function Product(props) {
                   }
                 />
               </ListItem>
-
-              {/* {state.product.part_number ? (
-                <ListItem>
-                  <ListItemText
-                    primary={
-                      <Typography variant="subtitle1" component="p">
-                        <span style={{ fontWeight: 500 }}>Model:</span>
-                        {` ${state.product.part_number}`}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              ) : (
-                ""
-              )} */}
               <ListItem>
-                <Rating
-                  name="read-only"
-                  // value={state.product.rating.average}
-                  value={5}
-                  readOnly
-                  precision={0.5}
-                />
-                {/* <span>({state.product.rating.length})</span> */}
+                <Rating name="read-only" value={5} readOnly precision={0.5} />
                 <span>({5})</span>
               </ListItem>
               <ListItem>
@@ -531,7 +403,6 @@ export default function Product(props) {
         {state.product.productType === "Laptop" ? (
           <Box mt={4}>
             <ProductTab
-              // productID={state.product.id}
               productID={state.option}
               productTitle={state.product.title}
               description={state.product.description}

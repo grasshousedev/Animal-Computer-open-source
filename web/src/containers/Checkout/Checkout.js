@@ -47,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Checkout() {
   const classes = useStyles();
+  const [user] = useState(null);
+  const [options] = useState(null);
   const [state, setState] = useState({
     error: null,
     loading: false,

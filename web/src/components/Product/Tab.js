@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Ratings from "./Ratings";
-
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
@@ -58,7 +56,6 @@ const ProductTab = ({
           aria-label="Rating, Specs Tab"
         >
           <Tab label="Specifications" {...tabProps(0)} />
-          {/* <Tab label="Reviews" {...tabProps(1)} /> */}
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -81,9 +78,6 @@ const ProductTab = ({
           </ListItem>
         </List>
       </TabPanel>
-      {/* <TabPanel value={value} index={1}>
-        <Ratings productID={productID} title={productTitle} />
-      </TabPanel> */}
     </div>
   );
 };

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import { searchURL } from "../../constants";
 import { store } from "../../apis/store";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -106,7 +104,6 @@ const Search = ({ setState, state, anchor }) => {
           })
           .then((response) => {
             const results = response.data;
-            console.log(response.data);
             if (results.length > 0) {
               setResult(results);
             } else {

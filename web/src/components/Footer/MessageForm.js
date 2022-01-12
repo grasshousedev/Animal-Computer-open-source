@@ -1,15 +1,11 @@
-import React, { useState } from "react"
-
-import Grid from "@material-ui/core/Grid"
-import TextField from "@material-ui/core/TextField"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import Button from "@material-ui/core/Button"
-import Snackbar from "@material-ui/core/Snackbar"
-import Alert from "@material-ui/lab/Alert"
-import { makeStyles, withStyles } from "@material-ui/core/styles"
-
-import { messageCreateURL } from "../../constants"
-import { store } from "../../apis/store"
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   input: {
     color: "white",
   },
-}))
+}));
 
 const CssTextField = withStyles({
   root: {
@@ -56,10 +52,10 @@ const CssTextField = withStyles({
       },
     },
   },
-})(TextField)
+})(TextField);
 
 const EmailForm = () => {
-  const classes = useStyles()
+  const classes = useStyles();
   const [data, setData] = useState({
     sending: false,
     sent: false,
@@ -68,53 +64,59 @@ const EmailForm = () => {
       email: null,
       content: null,
     },
-  })
+  });
   const onSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setData({
       ...data,
       sending: true,
-    })
-    store
-      .post(messageCreateURL, data.formData)
-      .then((response) => {
-        setData({
-          ...data,
-          sending: false,
-          sent: true,
-        })
-      })
-      .catch((error) => {
-        setData({
-          ...data,
-          sending: false,
-          error: error,
-        })
-      })
-  }
+    });
+    setData({
+      ...data,
+      sending: false,
+      sent: true,
+    });
+    e.target.reset();
+    // store
+    //   .post(messageCreateURL, data.formData)
+    //   .then((response) => {
+    //     setData({
+    //       ...data,
+    //       sending: false,
+    //       sent: true,
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     setData({
+    //       ...data,
+    //       sending: false,
+    //       error: error,
+    //     });
+    //   });
+  };
 
   const handleChange = (e) => {
-    const { formData } = data
+    const { formData } = data;
     const updatedFormData = {
       ...formData,
       [e.target.name]: e.target.value,
-    }
+    };
     setData({
       ...data,
       formData: updatedFormData,
-    })
-  }
+    });
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
-      return
+      return;
     }
 
     setData({
       ...data,
       sent: false,
-    })
-  }
+    });
+  };
 
   return (
     <React.Fragment>
@@ -170,7 +172,7 @@ const EmailForm = () => {
         </Grid>
       </form>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default EmailForm
+export default EmailForm;

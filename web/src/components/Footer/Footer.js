@@ -1,21 +1,19 @@
-import React from "react"
-import { Link } from "react-router-dom"
-
-import MessageForm from "./MessageForm"
-import Copyright from "../Copyright"
-
-import { makeStyles } from "@material-ui/core/styles"
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemText from "@material-ui/core/ListItemText"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import PhoneIcon from "@material-ui/icons/Phone"
-import RoomIcon from "@material-ui/icons/Room"
-import EmailIcon from "@material-ui/icons/Email"
-import WhatsAppIcon from "@material-ui/icons/WhatsApp"
-import Container from "@material-ui/core/Container"
+import React from "react";
+import { Link } from "react-router-dom";
+import MessageForm from "./MessageForm";
+import Copyright from "../Copyright";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import PhoneIcon from "@material-ui/icons/Phone";
+import RoomIcon from "@material-ui/icons/Room";
+import EmailIcon from "@material-ui/icons/Email";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -37,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
   item: {
     marginTop: theme.spacing(2),
   },
-}))
+}));
 
 const Footer = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -175,7 +173,7 @@ const Footer = () => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

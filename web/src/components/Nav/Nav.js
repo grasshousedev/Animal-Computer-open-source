@@ -1,22 +1,20 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { getCart } from "../../cartLocal"
-
-import SideDrawer from "./SideDrawer"
-import NavList from "./NavList"
-import Search from "./Search"
-import weblogo from "../../logo.png"
-
-import { makeStyles } from "@material-ui/core/styles"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import IconButton from "@material-ui/core/IconButton"
-import Hidden from "@material-ui/core/Hidden"
-import Typography from "@material-ui/core/Typography"
-import Box from "@material-ui/core/Box"
-import Badge from "@material-ui/core/Badge"
-import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined"
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getCart } from "../../cartLocal";
+import SideDrawer from "./SideDrawer";
+import NavList from "./NavList";
+import Search from "./Search";
+import weblogo from "../../logo.png";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Badge from "@material-ui/core/Badge";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 
 const useStyles = makeStyles((theme) => ({
   navDisplayFlex: {
@@ -60,18 +58,18 @@ const useStyles = makeStyles((theme) => ({
   second: {
     fontSize: "0.50rem",
   },
-}))
+}));
 
 const Nav = () => {
-  const classes = useStyles()
-  const token = localStorage.getItem("token")
+  const classes = useStyles();
+  const token = localStorage.getItem("token");
   let cart = useSelector((state) =>
     state.cart && state.cart.shoppingCart ? state.cart.shoppingCart.items : null
-  )
+  );
   // Only for updating upon fetch cart
-  let updateCart = useSelector((state) => state.cart)
+  let updateCart = useSelector((state) => state.cart);
   if (!token) {
-    cart = getCart()
+    cart = getCart();
   }
 
   return (
@@ -80,11 +78,7 @@ const Nav = () => {
         <Toolbar className={classes.navDisplayFlex}>
           <Link to="/" className={classes.linkText}>
             <Box className={classes.box} component="div">
-              <img
-                className={classes.logo}
-                alt="Site logo"
-                src={weblogo}
-              />
+              <img className={classes.logo} alt="Site logo" src={weblogo} />
               <div className={classes.div}>
                 <Typography
                   variant="body1"
@@ -130,7 +124,7 @@ const Nav = () => {
         </Toolbar>
       </AppBar>
     </div>
-  )
-}
+  );
+};
 
-export default Nav
+export default Nav;

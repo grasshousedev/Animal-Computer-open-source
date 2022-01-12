@@ -1,14 +1,12 @@
-import React, { useState } from "react"
-
-import NavList from "./NavList"
-import Search from "./Search"
-
-import Menu from "@material-ui/icons/Menu"
-import Drawer from "@material-ui/core/Drawer"
-import IconButton from "@material-ui/core/IconButton"
-import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import NavList from "./NavList";
+import Search from "./Search";
+import Menu from "@material-ui/icons/Menu";
+import Drawer from "@material-ui/core/Drawer";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -30,15 +28,15 @@ const useStyles = makeStyles((theme) => ({
   searchDiv: {
     padding: theme.spacing(1),
   },
-}))
+}));
 
 const SideDrawer = (props) => {
-  const classes = useStyles()
-  const [state, setState] = useState({ left: false })
+  const classes = useStyles();
+  const [state, setState] = useState({ left: false });
 
   const toggleDrawer = (anchor, open) => (event) => {
-    setState({ ...state, [anchor]: open })
-  }
+    setState({ ...state, [anchor]: open });
+  };
 
   const sideDrawerList = (anchor) => (
     <div
@@ -63,7 +61,7 @@ const SideDrawer = (props) => {
       </div>
       <NavList />
     </div>
-  )
+  );
 
   return (
     <React.Fragment>
@@ -84,7 +82,7 @@ const SideDrawer = (props) => {
         {sideDrawerList("left")}
       </Drawer>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default SideDrawer
+export default SideDrawer;

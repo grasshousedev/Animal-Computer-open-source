@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/actions/auth";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -10,7 +9,6 @@ import Badge from "@material-ui/core/Badge";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import LogoutAlertDialog from "../LogoutAlertDialog";
 import Hidden from "@material-ui/core/Hidden";
-
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { clearCart } from "../../store/actions/cart";
