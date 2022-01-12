@@ -31,7 +31,7 @@ const BuyerOrders = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     authStore
-      .get("/api/v1/getclientorders", {
+      .get("/api/v1/user/getclientorders", {
         withCredentials: true,
       })
       .then((response) => {

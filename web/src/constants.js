@@ -30,9 +30,9 @@ export const productsListURL = (product_type) => `/products/${product_type}/`;
 export const quantityUpdateURL = `/order/quantity/`;
 export const ratingsURL = `/ratings/`;
 export const ratingCreateURL = `/ratings/create/`;
-export const searchURL = `/api/v1/search/products`;
+export const searchURL = `/api/v1/product/search/products`;
 export const filterURL = `/filter/products`;
-export const specialURL = `/api/v1/special/products`;
+export const specialURL = `/api/v1/product/special/products`;
 export const countriesURL = `/countries/`;
 export const headersURL = `/api/v1/auth/headers`;
 

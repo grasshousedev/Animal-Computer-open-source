@@ -40,7 +40,7 @@ const Orders = () => {
     const elementId = e.target.parentElement.parentElement.parentElement.id;
     axios
       .post(
-        `${baseURL}/api/v1/changestatus`,
+        `${baseURL}/api/v1/user/changestatus`,
         {
           orderId: elementId,
         },

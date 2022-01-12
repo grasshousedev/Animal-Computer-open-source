@@ -92,7 +92,7 @@ const ProductList = (props) => {
     const ac = new AbortController();
     const getSpecialProducts = () => {
       store
-        .get("/api/v1/params/products", {
+        .get("/api/v1/product/params/products", {
           params: {
             product_type: product_type,
           },

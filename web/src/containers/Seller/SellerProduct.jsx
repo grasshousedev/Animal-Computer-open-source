@@ -10,7 +10,6 @@ import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,12 +25,11 @@ const SellerProduct = () => {
     loading: true,
     payload: null,
   });
-  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     authStore
-      .get("/api/v1/getsellerproducts", {
+      .get("/api/v1/user/getsellerproducts", {
         withCredentials: true,
       })
       .then((response) => {

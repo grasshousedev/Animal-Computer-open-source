@@ -116,7 +116,7 @@ function LaptopForm() {
 
       axios({
         method: "post",
-        url: `${baseURL}/api/v1/post/product`,
+        url: `${baseURL}/api/v1/product/post/product`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
