@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-// import * as yup from "yup";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import {
   CircularProgress,
   Container,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   Snackbar,
   Typography,
 } from "@material-ui/core";
@@ -39,26 +35,9 @@ function AccessoryForm() {
       productType: "Accessory",
       price: "",
     },
-    // initialValues: {
-    //   title: "Macbook Air 13",
-    //   description: `The Apple MacBook Air "Core i5" 1.6 13-Inch (Early 2015/Broadwell) features a 14-nm "Broadwell ULT" 1.6 GHz Intel "Core i5" processor (5250U) with two independent processor "cores" on a single chip, a 3 MB shared level 3 cache, 4 GB or 8 GB of onboard 1600 MHz LPDDR3 SDRAM (4 GB of RAM originally with the option to upgrade to 8 GB at the time of purchase only, and 8 GB standard starting April 19, 2016), 128 GB or 256 GB of 4 Lane PCIe-based flash storage, and an "integrated" Intel HD Graphics 60`,
-    //   brand: "Apple",
-    //   color: "white",
-    //   productType: "Laptop",
-    //   processorName: "Core i5",
-    //   processorDetail: `5250U`,
-    //   price: "600",
-    //   display: "13.3",
-    //   displayDetails: `TFT LED backlit active-matrix "glossy" display (1440x900 native resolution)`,
-    //   ram: "8GB DDR3 RAM ",
-    //   storage: " 1000GB HDD STORAGE",
-    //   label: "Featured",
-    // },
-    // validationSchema: validationSchema,
+
     onSubmit: (values, { resetForm }) => {
-      // console.log(productImages);
       if (productImages.length > 4 || productImages.length < 4) {
-        // return console.log("four pictures are required");
         let err = {
           response: {
             data: "4 pictures required",
@@ -72,13 +51,6 @@ function AccessoryForm() {
           message: err,
         });
       }
-      // alert(JSON.stringify(values, null, 2));
-      // console.log({values});
-      // console.log(productImages);
-      // setProductImages([]);
-      // productImages.map((element) => {
-      //   console.log(element);
-      // })
       var formData = new FormData();
       for (let i = 0; i < productImages.length; i++) {
         formData.append("myfile", productImages[i]);
@@ -92,7 +64,6 @@ function AccessoryForm() {
       formData.append("productType", "Accessory");
       formData.append("price", values.price);
 
-      // console.log(formData);
       setMyAlert({
         ...myAlert,
         saving: true,
@@ -101,13 +72,11 @@ function AccessoryForm() {
       axios({
         method: "post",
         url: `${baseURL}/api/v1/post/product`,
-        // url: `http://localhost:5000/api/v1/post/product`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       })
         .then((result) => {
-          console.log(result.data);
           setMyAlert({
             saving: false,
             success: true,
@@ -115,7 +84,6 @@ function AccessoryForm() {
           resetForm({ values: "" });
         })
         .catch((err) => {
-          console.log(err.response.data);
           setMyAlert({
             ...myAlert,
             saving: false,

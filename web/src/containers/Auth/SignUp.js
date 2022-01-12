@@ -5,13 +5,11 @@ import { authSignup, authReset } from "../../store/actions/auth";
 import { Link } from "react-router-dom";
 import { showError } from "../../utils";
 import * as Yup from "yup";
-
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
@@ -20,7 +18,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Google from "./Google";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -142,17 +139,6 @@ const SignUpForm = ({ location }) => {
         seller
       )
     );
-    console.log(
-      email,
-      password1,
-      password2,
-      firstName,
-      lastName,
-      phoneNumber,
-      address,
-      from,
-      seller
-    );
   };
 
   return (
@@ -271,12 +257,6 @@ const SignUpForm = ({ location }) => {
                     "Sign Up"
                   )}
                 </Button>
-                {/* <Google
-                  from={from}
-                  setError={setError}
-                  remember={values.remember}
-                  error={error}
-                /> */}
                 {error && <FormHelperText error={true}>{error}</FormHelperText>}
                 <div className={classes.div}>
                   <Grid container justify="center">

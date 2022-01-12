@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { authStore } from "../../apis/store";
 import { orderUserListURL } from "../../constants";
-
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -17,7 +16,6 @@ import baseURL from "../../setting";
 import axios from "axios";
 
 const Orders = () => {
-  // const [callUesEffect, setCallUesEffect] = useState(true)
   const [orders, setOrders] = useState({
     error: null,
     loading: true,
@@ -30,14 +28,12 @@ const Orders = () => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
         setOrders({ ...orders, payload: response.data, loading: false });
       })
       .catch((error) => {
         setOrders({ ...orders, error: error.response, loading: false });
-        // console.log(error.response.status);
       });
-    //   }, [callUesEffect]);
+    // eslint-disable-next-line
   }, []);
 
   const changeStatus = (e) => {
@@ -57,9 +53,7 @@ const Orders = () => {
           e.target.innerText = result.data;
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const renderOrders = () => {
@@ -99,23 +93,12 @@ const Orders = () => {
                       return `${element.quantity}, `;
                     })}
                   </TableCell>
-                  <TableCell align="left">
-                    {item.total} $
-                    {/* {new Date(item.ordered_date).toLocaleDateString("en-US", {
-                                                          day: "numeric",
-                                                          month: "short",
-                                                          year: "numeric",
-                                                          hour: "numeric",
-                                                          minute: "numeric",
-                                                        })} */}
-                  </TableCell>
+                  <TableCell align="left">{item.total} $</TableCell>
                   <TableCell align="left">
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={changeStatus}
-                      //   id={orders.payload[0]._id}
-                      //   id={1}
                     >
                       {item.status}
                     </Button>

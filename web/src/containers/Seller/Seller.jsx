@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { authStore } from "../../apis/store";
-// import { userDetailsURL } from "../../constants";
-
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -9,13 +6,6 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-
-// import Edit from "./Edit";
-// import Account from "./Account";
-// import Orders from "./Orders";
-// import Address from "./Address";
-// import Password from "./Password";
-// import ProfileList from "../Profile/ProfileList";
 import { Box } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import Lists from "./Lists";
@@ -41,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile() {
   const token = useSelector((state) => state.auth.token);
-
   const [state, setState] = useState({
     option: "loading",
     display: "Loading",
@@ -53,25 +42,12 @@ export default function UserProfile() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // const getUser = () => {
-    //   authStore
-    //     .get(userDetailsURL)
-    //     .then((response) => {
-    //       setState({
-    //         option: "account",
-    //         display: "Account Details",
-    //         user: response.data,
-    //       })
-    //     })
-    //     .catch((error) => setState({ ...state, error: error, option: "error" }))
-    // }
     setState({
       option: "buyerOrders",
       display: "Buyer Orders",
       user: token,
     });
-
-    // getUser()
+    // eslint-disable-next-line()
   }, []);
 
   const renderComponent = () => {
@@ -79,24 +55,18 @@ export default function UserProfile() {
       case "buyerOrders":
         return (
           <React.Fragment>
-            {/* <Account state={state} /> <h1>Buyer Orders</h1> */}
             <BuyerOrders />
           </React.Fragment>
         );
       case "sellLaptop":
         return (
           <React.Fragment>
-            {/* <Orders /> <h1>Sell Laptop</h1> */}
             <LaptopForm />
           </React.Fragment>
         );
       case "sellAccessories":
         return (
           <React.Fragment>
-            {/* <Edit state={state} setState={setState} /> */}{" "}
-            {/* <Typography variant="h5" component="h5">
-              Sell Accessories
-            </Typography> */}
             <AccessoryForm />
           </React.Fragment>
         );
@@ -104,7 +74,6 @@ export default function UserProfile() {
       case "sellerProduct":
         return (
           <React.Fragment>
-            {/* <Password state={state} /> <h1>Your Products</h1> */}
             <SellerProduct />
           </React.Fragment>
         );

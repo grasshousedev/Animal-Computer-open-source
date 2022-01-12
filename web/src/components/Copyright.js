@@ -1,8 +1,7 @@
-import React from "react"
-import { Link } from "react-router-dom"
-
-import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
+import React from "react";
+import { Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   linkText: {
@@ -12,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer",
     },
   },
-}))
+}));
 
 const Copyright = () => {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <div style={{ padding: 10 }}>
       <Typography variant="body2" color="inherit" align="center">
@@ -27,7 +26,7 @@ const Copyright = () => {
         {"."}
       </Typography>
     </div>
-  )
-}
+  );
+};
 
-export default Copyright
+export default Copyright;

@@ -1,8 +1,5 @@
 import { API_SERVER } from "./setting";
 
-// const apiURL = "/api"
-// export const endpoint = `${API_SERVER}${apiURL}`
-
 export const endpoint = API_SERVER;
 
 export const googleLogin = `/rest-auth/google/`;
@@ -35,7 +32,6 @@ export const ratingsURL = `/ratings/`;
 export const ratingCreateURL = `/ratings/create/`;
 export const searchURL = `/api/v1/search/products`;
 export const filterURL = `/filter/products`;
-// export const specialURL = `/special/products`;
 export const specialURL = `/api/v1/special/products`;
 export const countriesURL = `/countries/`;
 export const headersURL = `/api/v1/auth/headers`;

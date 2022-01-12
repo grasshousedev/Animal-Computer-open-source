@@ -20,37 +20,13 @@ const getCart = () => {
 const createCartItem = (product, option) => {
   const cartIndex = cart.findIndex((cartItem) => {
     return cartItem.id === product._id;
-    // if (option) {
-    // return cartItem.id === product._id;
-    // } else {
-    //   return cartItem.id === product._id
-    // }
   });
-
   if (cartIndex === -1) {
-    // const config = product.find(
-    //   (element) => element.id === parseInt(option)
-    // )
-    // let price = 0
-    // if (config) {
-    //   if (config.discountPrice) {
-    //     price = config.discountPrice
-    //   } else {
-    //     price = config.price
-    //   }
-    // } else {
-    //   if (product.discountPrice) {
-    //     price = product.discountPrice
-    //   } else {
-    //     price = product.price
-    //   }
-    // }
     cart.push({
       id: product._id,
       title: product.title,
       price: product.price,
       image: product.imageURL1,
-      // config: config,
       slug: product._id,
       quantity: 1,
       authorId: product.authorId,
@@ -69,7 +45,6 @@ const updateQuantity = (slug, quantity, config) => {
       return cartItem.slug === slug;
     }
   });
-
   if (cartIndex > -1) {
     cart[cartIndex].quantity = parseInt(quantity);
     saveCart();
@@ -84,7 +59,6 @@ const removeCartItem = (id, option) => {
       return cartItem.id === id;
     }
   });
-
   if (cartIndex > -1) {
     cart.splice(cartIndex, 1);
     saveCart();

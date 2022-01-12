@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom"
 import { store } from "../apis/store";
 import { headersURL } from "../constants";
-
 import Slider from "infinite-react-carousel";
-
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import SpecificList from "../components/Product/SpecificList";
 import ScrollToTopOnMount from "../components/ScrollToTopOnMount";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +41,6 @@ const Item = (props) => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      {/* <Link to={props.item.link}> */}
       <img
         width="1600 px"
         height="400 px"
@@ -53,7 +48,6 @@ const Item = (props) => {
         src={props.item.imageURL}
         className={classes.image}
       />
-      {/* </Link> */}
     </div>
   );
 };

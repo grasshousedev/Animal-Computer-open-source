@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
-
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { useButtonStyles } from "./CheckoutStyles";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Avatar,
   CircularProgress,
@@ -38,29 +31,6 @@ const MyTextField = ({ label, ...props }) => {
   );
 };
 
-// const MyCheckbox = ({ label, ...props }) => {
-//   const [field] = useField(props);
-//   return (
-//     <FormControlLabel
-//       control={<Checkbox defaultChecked color="secondary" />}
-//       label={label}
-//       {...field}
-//     />
-//   );
-// };
-
-// const MySelect = ({ label, ...props }) => {
-//   const [field] = useField(props);
-//   return (
-//     <FormControl fullWidth>
-//       <InputLabel id="country">{label}</InputLabel>
-//       <Select labelId="country" {...field}>
-//         <MenuItem value={"Pakistan"}>Pakistan</MenuItem>
-//       </Select>
-//     </FormControl>
-//   );
-// };
-
 const validationSchema = Yup.object({
   firstName: Yup.string()
     .required("Required")
@@ -82,17 +52,13 @@ const getPrice = (quantity, price) => {
   return quantity * price;
 };
 
-// export default function AddressForm({ address, formRef }) {
 export default function AddressForm() {
   const [cart, setCart] = useState([]);
   const [status, setStatus] = useState({
     loading: false,
   });
   const buttonClasses = useButtonStyles();
-  // const dispatch = useDispatch(function)
   const token = useSelector((state) => state.auth.token);
-  const check = useSelector((state) => state);
-  // console.log(token);
 
   let total = 0;
   cart.forEach((item) => (total += getPrice(item.quantity, item.price)));
@@ -100,13 +66,11 @@ export default function AddressForm() {
   useEffect(() => {
     const getCart = JSON.parse(localStorage.getItem("cart"));
     setCart(getCart);
-    // console.log(cart);
+    // eslint-disable-next-line
   }, []);
-  // console.log(check);
 
   const handleSubmit = (values) => {
     setStatus({ loading: true });
-    // console.log(values);
     const {
       deliveryAddress,
       firstName,
@@ -114,13 +78,6 @@ export default function AddressForm() {
       lastName,
       phoneNumber,
     } = values;
-    // var obj = {};
-    // console.log(cart);
-    // cart.map((element, i) => {
-    // console.log(element.authorId);
-    //   obj[element.authorId] = element.authorId;
-    // });
-    // console.log(obj);
 
     axios
       .post(
@@ -143,42 +100,9 @@ export default function AddressForm() {
         const json = await result.data.link;
         window.location.assign(json);
         setStatus({ loading: false });
-        // console.log(result);
-        // axios
-        //   .post(
-        //     `${baseURL}/api/v1/post/order`,
-        //     {
-        //       deliveryAddress: deliveryAddress,
-        //       firstName: firstName,
-        //       googleLocation: googleLocation,
-        //       lastName: lastName,
-        //       phoneNumber: phoneNumber,
-        //       total: total,
-        //       arrayOfCart: cart,
-        //     },
-        //     {
-        //       withCredentials: true,
-        //     }
-        //   )
-        //   .then(async (data) => {
-        //     console.log(data.data);
-        //     if (result) {
-        //       console.log(result);
-        //       await localStorage.removeItem("cart");
-        //       const json = await result.data.link;
-        //       window.location.assign(json);
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
-
-        // alert(JSON.stringify(values));
-        // console.log(total);
       })
       .catch((err) => {
         setStatus({ loading: false });
-        console.log(err);
       });
   };
 
@@ -200,7 +124,6 @@ export default function AddressForm() {
           <ListItemText
             primary={<Typography variant="subtitle1">Total</Typography>}
           />
-          {/* <Typography variant="subtitle1">{total} AED</Typography> */}
           <Typography variant="subtitle1"> {total} $</Typography>
         </ListItem>
       </List>
@@ -219,7 +142,6 @@ export default function AddressForm() {
           deliveryAddress: token.address,
           googleLocation: "",
         }}
-        // innerRef={formRef}
       >
         {() => (
           <Form>
@@ -252,37 +174,6 @@ export default function AddressForm() {
                   fullWidth
                 />
               </Grid>
-              {/* <Grid item xs={12} sm={6}>
-                <MyTextField name="city" label="City" fullWidth />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <MyTextField
-                  name="state"
-                  label="State/Province/Region"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <MyTextField
-                  name="zip"
-                  label="Zip / Postal code"
-                  fullWidth
-                  autoComplete="shipping postal-code"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <MySelect
-                  name="country"
-                  label="Country"
-                  autoComplete="shipping country"
-                />
-              </Grid> */}
-              {/* <Grid item xs={12}>
-                <MyCheckbox
-                  name="is_default"
-                  label="Set this address as default?"
-                />
-              </Grid> */}
             </Grid>
             <Grid item xs={12}>
               <div className={buttonClasses.buttons}>

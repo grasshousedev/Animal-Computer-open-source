@@ -2,7 +2,6 @@ import axios from "axios";
 import { endpoint } from "../constants";
 import Qs from "qs";
 
-
 export const store = axios.create({
   baseURL: endpoint,
 });

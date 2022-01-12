@@ -5,10 +5,7 @@ import { authLogin, authReset } from "../../store/actions/auth";
 import { Link } from "react-router-dom";
 import { showError } from "../../utils";
 import * as Yup from "yup";
-
 import Copyright from "../../components/Copyright";
-import Google from "./Google";
-
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -92,7 +89,6 @@ const SignInForm = ({ location }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const status = useSelector((state) => state.auth);
-  // This error variable is for google login error
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -105,9 +101,6 @@ const SignInForm = ({ location }) => {
   const handleSubmit = ({ email, password }) => {
     dispatch(authLogin(email, password, from));
   };
-  // const handleSubmit = ({ email, password, remember }) => {
-  //   dispatch(authLogin(email, password, from, remember))
-  // }
 
   return (
     <React.Fragment>
@@ -130,7 +123,6 @@ const SignInForm = ({ location }) => {
           <Formik
             onSubmit={handleSubmit}
             initialValues={{ email: "", password: "" }}
-            // initialValues={{ email: "", password: "", remember: "" }}
             validateOnChange={true}
             validationSchema={validationSchema}
           >
@@ -159,7 +151,6 @@ const SignInForm = ({ location }) => {
                   fullWidth
                 />
                 <MyCheckbox name="show_password" label="Show password" />
-                {/* <MyCheckbox label="Remember me" name="remember" /> */}
                 <Button
                   type="submit"
                   fullWidth
@@ -173,12 +164,6 @@ const SignInForm = ({ location }) => {
                     "Sign In"
                   )}
                 </Button>
-                {/* <Google
-                  from={from}
-                  remember={values.remember}
-                  setError={setError}
-                  error={error}
-                /> */}
                 {error && <FormHelperText error={true}>{error}</FormHelperText>}
                 <div className={classes.div}>
                   <Grid container spacing={6}>

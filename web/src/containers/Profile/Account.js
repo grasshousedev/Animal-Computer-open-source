@@ -1,5 +1,4 @@
 import React from "react";
-
 import Box from "@material-ui/core/Box";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -40,17 +39,6 @@ const Account = ({ state }) => {
               </TableCell>
               <TableCell>{state.user.address}</TableCell>
             </TableRow>
-
-            {/* <TableRow>
-              <TableCell component="th" scope="row">
-                <Box fontWeight="fontWeightMedium">Phone Number</Box>
-              </TableCell>
-              <TableCell>
-                {state.user.phone_number
-                  ? state.user.phone_number
-                  : "Not available"}
-              </TableCell>
-            </TableRow> */}
           </TableBody>
         </Table>
       </TableContainer>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { authStore } from "../../apis/store";
-
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -19,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
 }));
+
 const SellerProduct = () => {
   const classes = useStyles();
   const [orders, setOrders] = useState({
@@ -35,14 +35,12 @@ const SellerProduct = () => {
         withCredentials: true,
       })
       .then((response) => {
-        // console.log(response.data);
         setOrders({ ...orders, payload: response.data, loading: false });
       })
       .catch((error) => {
         setOrders({ ...orders, error: error.response, loading: false });
-        // console.log(error.response.status);
-        // console.log(error);
       });
+    // eslint-disable-next-line
   }, []);
 
   const renderOrders = () => {
@@ -66,8 +64,6 @@ const SellerProduct = () => {
                 <TableCell align="left"> Brand </TableCell>
                 <TableCell align="left"> Color </TableCell>
                 <TableCell align="left"> Details </TableCell>
-                {/* <TableCell align="left"> Total </TableCell>
-                <TableCell align="left">Status</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -82,7 +78,9 @@ const SellerProduct = () => {
                   <TableCell align="left">{item.price}</TableCell>
                   <TableCell align="left">{item.brand}</TableCell>
                   <TableCell align="left">{item.color}</TableCell>
-                  <TableCell align="left">{item.processorName} {item.ram} {item.storage}</TableCell>
+                  <TableCell align="left">
+                    {item.processorName} {item.ram} {item.storage}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

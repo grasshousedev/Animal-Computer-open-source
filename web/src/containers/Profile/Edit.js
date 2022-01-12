@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { authStore } from "../../apis/store";
 import { updateUserURL } from "../../constants";
-
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -36,7 +35,6 @@ const Edit = ({ state, setState }) => {
   const { formData } = details;
 
   useEffect(() => {
-    // console.log(state)
     setDetails({
       ...details,
       formData: {
@@ -52,7 +50,6 @@ const Edit = ({ state, setState }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(details.formData);
     setDetails({
       ...details,
       saving: true,
@@ -71,7 +68,6 @@ const Edit = ({ state, setState }) => {
         }
       )
       .then((response) => {
-        // console.log(response.data);
         setState({
           option: "account",
           user: { ...response.data },

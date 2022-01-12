@@ -1,24 +1,23 @@
-import React, { useState } from "react"
-import { Link } from "react-router-dom"
-import { store } from "../../apis/store"
-import { confirmResetURL } from "../../constants"
-import { showError } from "../../utils"
-import { Formik, Form, useField } from "formik"
-import * as Yup from "yup"
-
-import Avatar from "@material-ui/core/Avatar"
-import Button from "@material-ui/core/Button"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import TextField from "@material-ui/core/TextField"
-import Box from "@material-ui/core/Box"
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
-import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
-import Container from "@material-ui/core/Container"
-import Copyright from "../../components/Copyright"
-import CircularProgress from "@material-ui/core/CircularProgress"
-import Checkbox from "@material-ui/core/Checkbox"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { store } from "../../apis/store";
+import { confirmResetURL } from "../../constants";
+import { showError } from "../../utils";
+import { Formik, Form, useField } from "formik";
+import * as Yup from "yup";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Copyright from "../../components/Copyright";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}))
+}));
 
 const MyTextField = ({
   label,
@@ -48,8 +47,8 @@ const MyTextField = ({
   type,
   ...props
 }) => {
-  const [field, meta] = useField(props)
-  const errorText = meta.error && meta.touched ? meta.error : ""
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : "";
   return (
     <TextField
       label={label}
@@ -62,19 +61,19 @@ const MyTextField = ({
       type={type}
       fullWidth
     />
-  )
-}
+  );
+};
 
 const MyCheckbox = ({ label, ...props }) => {
-  const [field] = useField(props)
+  const [field] = useField(props);
   return (
     <FormControlLabel
       control={<Checkbox color="primary" />}
       label={label}
       {...field}
     />
-  )
-}
+  );
+};
 
 const validationSchema = Yup.object({
   new_password1: Yup.string()
@@ -88,12 +87,12 @@ const validationSchema = Yup.object({
     [Yup.ref("new_password1"), null],
     "Passwords must match"
   ),
-})
+});
 
 export default function ResetPassword(props) {
-  const classes = useStyles()
-  const uid = props.match.params.uid
-  const token = props.match.params.token
+  const classes = useStyles();
+  const uid = props.match.params.uid;
+  const token = props.match.params.token;
 
   const [state, setState] = useState({
     sending: false,
@@ -106,13 +105,13 @@ export default function ResetPassword(props) {
       new_password2: "",
       show_password: false,
     },
-  })
+  });
 
   const handleTokenSubmit = (values) => {
     setState({
       ...state,
       sending: true,
-    })
+    });
     store
       .post(confirmResetURL, values)
       .then((response) => {
@@ -120,7 +119,7 @@ export default function ResetPassword(props) {
           ...state,
           sending: false,
           success: true,
-        })
+        });
       })
       .catch((error) => {
         setState({
@@ -128,13 +127,13 @@ export default function ResetPassword(props) {
           sending: false,
           success: false,
           error: error,
-        })
-      })
-  }
+        });
+      });
+  };
 
   const renderForm = () => {
     if (state.sending === true && state.success === false) {
-      return <CircularProgress />
+      return <CircularProgress />;
     } else if (state.sending === false && state.success === false) {
       return (
         <React.Fragment>
@@ -187,7 +186,7 @@ export default function ResetPassword(props) {
             )}
           </Formik>
         </React.Fragment>
-      )
+      );
     } else {
       return (
         <React.Fragment>
@@ -205,9 +204,9 @@ export default function ResetPassword(props) {
             Sign In
           </Button>
         </React.Fragment>
-      )
+      );
     }
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -222,5 +221,5 @@ export default function ResetPassword(props) {
         <Copyright />
       </Box>
     </Container>
-  )
+  );
 }

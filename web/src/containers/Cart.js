@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCart, removeCartItem, updateQuantity } from "../cartLocal";
-import { authStore } from "../apis/store";
 import { fetchCart } from "../store/actions/cart";
-import { removeFromCartURL, quantityUpdateURL } from "../constants";
 import ScrollToTopOnMount from "../components/ScrollToTopOnMount";
-
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -16,7 +13,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import ClearIcon from "@material-ui/icons/Clear";
 import Grid from "@material-ui/core/Grid";
@@ -62,21 +58,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Cart = ({ onDismiss }) => {
   const classes = useStyles();
-  let carts = useSelector((state) => state);
   const cart = getCart();
   const [state, setState] = useState({
     error: false,
     message: "",
   });
   const dispatch = useDispatch();
-  // const token = localStorage.getItem("token")
-  // if (!token) {
-  // cart = getCart()
-  // }
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(cart);
+    // eslint-disable-next-line
   }, []);
 
   const handleSnackbarClose = (event, reason) => {
@@ -91,22 +82,8 @@ const Cart = ({ onDismiss }) => {
   };
 
   const handleRemove = (id) => {
-    // if (token) {
-    //   authStore
-    //     .delete(removeFromCartURL(id))
-    //     .then((response) => {
-    //       dispatch(fetchCart());
-    //     })
-    //     .catch((error) => {
-    //       setState({
-    //         error: true,
-    //         message: error,
-    //       });
-    //     });
-    // } else {
     removeCartItem(id);
     dispatch(fetchCart());
-    // }
   };
 
   const renderActions = () => {
@@ -147,21 +124,8 @@ const Cart = ({ onDismiss }) => {
   };
 
   const quantityUpdate = (slug, config, quantity) => {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   authStore
-    //     .post(quantityUpdateURL, { slug, config, quantity })
-    //     .then((res) => {
-    //       dispatch(fetchCart());
-    //     })
-    //     .catch((err) => {
-    //       dispatch(fetchCart());
-    //       setState({ error: true, message: err });
-    //     });
-    // } else {
     updateQuantity(slug, config, quantity);
     dispatch(fetchCart());
-    // }
   };
 
   const handleChange = (e, slug, config) => {
@@ -195,123 +159,7 @@ const Cart = ({ onDismiss }) => {
     );
   };
 
-  // const renderOnlineTable = () => {
-  //   return (
-  //     <TableContainer>
-  //       <Table aria-label="spanning table">
-  //         <TableHead>
-  //           <TableRow>
-  //             <TableCell>Items</TableCell>
-  //             <TableCell align="right">Quantity</TableCell>
-  //             <TableCell align="right">Price</TableCell>
-  //             <TableCell align="right" />
-  //           </TableRow>
-  //         </TableHead>
-  //         <TableBody>
-  //           {cart.shoppingCart.items.map((order_item) => {
-  //             return (
-  //               <TableRow key={order_item.id}>
-  //                 <TableCell className={classes.items}>
-  //                   <Hidden smDown>
-  //                     <img
-  //                       src={order_item.item.images[0].image}
-  //                       className={classes.image}
-  //                       alt="Product"
-  //                     />
-  //                     &nbsp; &nbsp; &nbsp;
-  //                   </Hidden>
-  //                   <div>
-  //                     {" "}
-  //                     {order_item.item.title}{" "}
-  //                     {order_item.config
-  //                       ? `${order_item.config.ram} + ${order_item.config.storage}`
-  //                       : ""}
-  //                   </div>
-  //                 </TableCell>
-  //                 <TableCell align="right">
-  //                   <TextField
-  //                     type="number"
-  //                     onChange={(e) => {
-  //                       const config = order_item.config;
-  //                       if (config === null) {
-  //                         handleChange(e, order_item.item.slug, config);
-  //                       } else {
-  //                         handleChange(
-  //                           e,
-  //                           order_item.item.slug,
-  //                           order_item.config.id
-  //                         );
-  //                       }
-  //                     }}
-  //                     defaultValue={order_item.quantity}
-  //                     size="small"
-  //                   />
-  //                 </TableCell>
-  //                 <TableCell align="right">{order_item.final_price}</TableCell>
-  //                 <TableCell align="right">
-  //                   <IconButton onClick={(e) => handleRemove(order_item.id)}>
-  //                     <ClearIcon />
-  //                   </IconButton>
-  //                 </TableCell>
-  //               </TableRow>
-  //             );
-  //           })}
-  //           <TableRow>
-  //             <TableCell align="right" />
-  //             <TableCell align="right" style={{ fontWeight: 500 }}>
-  //               Shipping
-  //             </TableCell>
-  //             <TableCell align="right">
-  //               {cart.shoppingCart.shipping_cost}
-  //             </TableCell>
-  //             <TableCell align="right" />
-  //           </TableRow>
-  //           <TableRow>
-  //             <TableCell align="right" />
-  //             <TableCell align="right" style={{ fontWeight: 500 }}>
-  //               Total
-  //             </TableCell>
-  //             <TableCell align="right">{cart.shoppingCart.total}</TableCell>
-  //             <TableCell align="right" />
-  //           </TableRow>
-  //         </TableBody>
-  //       </Table>
-  //     </TableContainer>
-  //   );
-  // };
-
   const renderCart = () => {
-    // if (cart !== null && cart.shoppingCart !== undefined) {
-    //   if (cart.loading === true) {
-    //     return <CircularProgress />;
-    //   } else if (cart.error) {
-    //     return (
-    //       <React.Fragment>
-    //         {showError(cart.error) === "Not found." ? (
-    //           renderEmpty()
-    //         ) : (
-    //           <Typography variant="body1">{showError(cart.error)}</Typography>
-    //         )}
-    //       </React.Fragment>
-    //     );
-    //   } else if (
-    //     cart.shoppingCart !== null &&
-    //     cart.shoppingCart.items !== null
-    //   ) {
-    //     if (cart.shoppingCart.items.length === 0) {
-    //       return renderEmpty();
-    //     }
-    //     return (
-    //       <React.Fragment>
-    //         {renderOnlineTable()}
-    //         {renderActions()}
-    //       </React.Fragment>
-    //     );
-    //   } else {
-    //     return renderEmpty();
-    //   }
-    //   // Local cart
-    // } else
     if (cart !== null && cart.length > 0) {
       let total = 0;
       cart.forEach((item) => (total += getPrice(item.quantity, item.price)));
@@ -351,8 +199,6 @@ const Cart = ({ onDismiss }) => {
                       </TableCell>
                       <TableCell align="right">
                         <TextField
-                          // type="number"
-                          // inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                           inputProps={{
                             step: 1,
                             min: 1,

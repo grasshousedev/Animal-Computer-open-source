@@ -1,56 +1,56 @@
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import Cookies from "js-cookie"
-
-import Snackbar from "@material-ui/core/Snackbar"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import Snackbar from "@material-ui/core/Snackbar";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 const CookieConsent = () => {
   const [state, setState] = useState({
     visible: false,
     acceptOnScrollPercentage: 25,
-  })
+  });
 
   const handleAccept = () => {
-    Cookies.set("AlamalConsentCookies", "Given", { expires: 365 })
+    Cookies.set("AlamalConsentCookies", "Given", { expires: 365 });
     setState({
       ...state,
       visible: false,
-    })
-  }
+    });
+  };
 
   const handleScroll = () => {
-    const rootNode = document.documentElement || document.body
+    const rootNode = document.documentElement || document.body;
 
     if (rootNode) {
       const percentage =
         (rootNode.scrollTop / (rootNode.scrollHeight - rootNode.clientHeight)) *
-        100
+        100;
 
       if (percentage > state.acceptOnScrollPercentage) {
-        handleAccept()
+        handleAccept();
       }
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll);
 
     if (Cookies.get("AlamalConsentCookies") === undefined) {
       setState({
         ...state,
         visible: true,
-      })
+      });
     }
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line
+  }, []);
 
   const action = (
     <Button color="secondary" size="small" key="accept" onClick={handleAccept}>
       Accept
     </Button>
-  )
+  );
 
   const message = (
     <React.Fragment>
@@ -63,7 +63,7 @@ const CookieConsent = () => {
         </Typography>
       </Link>
     </React.Fragment>
-  )
+  );
 
   return (
     <Snackbar
@@ -72,7 +72,7 @@ const CookieConsent = () => {
       message={message}
       action={action}
     />
-  )
-}
+  );
+};
 
-export default CookieConsent
+export default CookieConsent;

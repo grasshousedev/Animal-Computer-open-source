@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-// import * as yup from "yup";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import {
@@ -17,17 +16,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { showError } from "../../../utils";
 import Alert from "@material-ui/lab/Alert";
-
-// const validationSchema = yup.object({
-//   email: yup
-//     .string("Enter your email")
-//     .email("Enter a valid email")
-//     .required("Email is required"),
-//   password: yup
-//     .string("Enter your password")
-//     .min(8, "Password should be of minimum 8 characters length")
-//     .required("Password is required"),
-// });
 
 function LaptopForm() {
   const state = useSelector((state) => state.auth.token);
@@ -57,26 +45,9 @@ function LaptopForm() {
       storage: "",
       label: "Featured",
     },
-    // initialValues: {
-    //   title: "Macbook Air 13",
-    //   description: `The Apple MacBook Air "Core i5" 1.6 13-Inch (Early 2015/Broadwell) features a 14-nm "Broadwell ULT" 1.6 GHz Intel "Core i5" processor (5250U) with two independent processor "cores" on a single chip, a 3 MB shared level 3 cache, 4 GB or 8 GB of onboard 1600 MHz LPDDR3 SDRAM (4 GB of RAM originally with the option to upgrade to 8 GB at the time of purchase only, and 8 GB standard starting April 19, 2016), 128 GB or 256 GB of 4 Lane PCIe-based flash storage, and an "integrated" Intel HD Graphics 60`,
-    //   brand: "Apple",
-    //   color: "white",
-    //   productType: "Laptop",
-    //   processorName: "Core i5",
-    //   processorDetail: `5250U`,
-    //   price: "600",
-    //   display: "13.3",
-    //   displayDetails: `TFT LED backlit active-matrix "glossy" display (1440x900 native resolution)`,
-    //   ram: "8GB DDR3 RAM ",
-    //   storage: " 1000GB HDD STORAGE",
-    //   label: "Featured",
-    // },
-    // validationSchema: validationSchema,
+
     onSubmit: (values, { resetForm }) => {
-      // console.log(productImages);
       if (productImages.length > 4 || productImages.length < 4) {
-        // return console.log("four pictures are required");
         let err = {
           response: {
             data: "4 pictures required",
@@ -90,13 +61,6 @@ function LaptopForm() {
           message: err,
         });
       }
-      // alert(JSON.stringify(values, null, 2));
-      // console.log({values});
-      // console.log(productImages);
-      // setProductImages([]);
-      // productImages.map((element) => {
-      //   console.log(element);
-      // })
       var formData = new FormData();
       for (let i = 0; i < productImages.length; i++) {
         formData.append("myfile", productImages[i]);
@@ -117,7 +81,6 @@ function LaptopForm() {
       formData.append("storage", values.storage);
       formData.append("label", values.label);
 
-      // console.log(formData);
       setMyAlert({
         ...myAlert,
         saving: true,
@@ -126,13 +89,11 @@ function LaptopForm() {
       axios({
         method: "post",
         url: `${baseURL}/api/v1/post/product`,
-        // url: `http://localhost:5000/api/v1/post/product`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       })
         .then((result) => {
-          console.log(result.data);
           setMyAlert({
             saving: false,
             success: true,
@@ -140,7 +101,6 @@ function LaptopForm() {
           resetForm({ values: "" });
         })
         .catch((err) => {
-          console.log(err.response.data);
           setMyAlert({
             ...myAlert,
             saving: false,
@@ -278,7 +238,7 @@ function LaptopForm() {
                 label="Product Type"
                 InputProps={{
                   readOnly: true,
-                }}      
+                }}
                 variant="outlined"
                 value={formik.values.productType}
                 onChange={formik.handleChange}
@@ -457,7 +417,11 @@ function LaptopForm() {
               />
             </Grid>
             <Button color="primary" variant="contained" fullWidth type="submit">
-              {myAlert.saving ? <CircularProgress color="secondary" /> : "Submit"}
+              {myAlert.saving ? (
+                <CircularProgress color="secondary" />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </Grid>
         </form>

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { authStore } from "../../apis/store";
-import { userDetailsURL } from "../../constants";
-
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -9,11 +6,9 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-
 import Edit from "./Edit";
 import Account from "./Account";
 import Orders from "./Orders";
-import Address from "./Address";
 import Password from "./Password";
 import ProfileList from "./ProfileList";
 import { Box } from "@material-ui/core";
@@ -47,25 +42,12 @@ export default function UserProfile() {
   const classes = useStyles();
 
   useEffect(() => {
-    // const getUser = () => {
-    //   authStore
-    //     .get(userDetailsURL)
-    //     .then((response) => {
-    //       setState({
-    //         option: "account",
-    //         display: "Account Details",
-    //         user: response.data,
-    //       })
-    //     })
-    //     .catch((error) => setState({ ...state, error: error, option: "error" }))
-    // }
     setState({
       option: "account",
       display: "Account Details",
       user: token,
     });
-
-    // getUser()
+    // eslint-disable-next-line
   }, []);
 
   const renderComponent = () => {
@@ -88,15 +70,8 @@ export default function UserProfile() {
             <Edit state={state} setState={setState} />
           </React.Fragment>
         );
-      // case "address":
-      //   return (
-      //     <React.Fragment>
-      //       {/* <Address user={state.user} /> */}
-      //       <Typography variant="h5" component="h5" >We Have Your Address</Typography>
-      //     </React.Fragment>
-      //   );
       case "password":
-        return (  
+        return (
           <React.Fragment>
             <Password state={state} />
           </React.Fragment>
