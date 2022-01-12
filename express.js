@@ -21,6 +21,8 @@ import paypal from "paypal-rest-sdk";
 import path from "path";
 import { connectWithDataBase } from "./mongoDB.js";
 import authRouter from "./routes/auth.js";
+import verifyToken from "./routes/tokenverify.js";
+import verifyUser from "./middleware/verifyuser.js";
 const __dirname = path.resolve();
 
 const SECRET = process.env.SECRET || "0241";
@@ -133,42 +135,42 @@ app.get("/api/v1/product", (req, res) => {
   }
 });
 
-app.use((req, res, next) => {
-  // console.log(req.cookies.webTokenAlamal);
-  jwt.verify(req.cookies.webTokenAlamal, SECRET, function (err, decoded) {
-    // console.log(decoded);
-    req.body._decoded = decoded;
-    if (!err) {
-      next();
-    } else {
-      // res.status(401).sendFile(path.join(__dirname, "./web/"));
-      // res.status(401).send("Token not verified");
-      res.status(401).sendFile(path.join(__dirname, "./web/build/index.html"));
-    }
-  });
-});
-
-app.get("/api/v1/tokenverify", (req, res) => {
-  signUpUser.findOne({ _id: req.body._decoded?.id }, (err, user) => {
-    if (err) {
-      return res.status(502).send("Server Error");
-    } else {
-      if (user) {
-        return res.send({
-          id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          address: user.address,
-          seller: user.seller,
-        });
-      } else {
-        return res.status(401).send("UnAuthenticated user");
-      }
-    }
-  });
-});
+// app.use((req, res, next) => {
+//   // console.log(req.cookies.webTokenAlamal);
+//   jwt.verify(req.cookies.webTokenAlamal, SECRET, function (err, decoded) {
+//     // console.log(decoded);
+//     req.body._decoded = decoded;
+//     if (!err) {
+//       next();
+//     } else {
+//       // res.status(401).sendFile(path.join(__dirname, "./web/"));
+//       // res.status(401).send("Token not verified");
+//       res.status(401).sendFile(path.join(__dirname, "./web/build/index.html"));
+//     }
+//   });
+// });
+app.use("/api/v1/tokenverify", verifyUser, verifyToken);
+// app.get("/api/v1/tokenverify", (req, res) => {
+//   signUpUser.findOne({ _id: req.body._decoded?.id }, (err, user) => {
+//     if (err) {
+//       return res.status(502).send("Server Error");
+//     } else {
+//       if (user) {
+//         return res.send({
+//           id: user._id,
+//           firstName: user.firstName,
+//           lastName: user.lastName,
+//           email: user.email,
+//           phoneNumber: user.phoneNumber,
+//           address: user.address,
+//           seller: user.seller,
+//         });
+//       } else {
+//         return res.status(401).send("UnAuthenticated user");
+//       }
+//     }
+//   });
+// });
 
 app.post("/api/v1/post/product", upload.array("myfile", 4), (req, res) => {
   try {

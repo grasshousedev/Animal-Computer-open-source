@@ -1,7 +1,7 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-import { headersImages } from "../models/headerImg";
-import { signUpUser } from "../models/signup";
+import { headersImages } from "../models/headerImg.js";
+import { signUpUser } from "../models/signup.js";
 import bcrypt from "bcrypt";
 const SECRET = process.env.SECRET || "0241";
 import jwt from "jsonwebtoken";
