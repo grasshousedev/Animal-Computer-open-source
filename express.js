@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import { body, validationResult } from "express-validator";
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
@@ -12,43 +11,27 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { readFile } from "fs/promises";
 import dotenv from "dotenv";
 //  multer
-import multer from "multer";
-const storageConfig = multer.diskStorage({
-  destination: "./uploads/",
-  filename: function (req, file, cb) {
-    cb(null, `${new Date().getTime()}---${file.originalname}`);
-  },
-});
+import { upload } from "./multer.js";
 
-const upload = multer({ storage: storageConfig });
 // morgan
 dotenv.config();
 import morgan from "morgan";
 import { unlink } from "fs/promises";
 import paypal from "paypal-rest-sdk";
 import path from "path";
+import { connectWithDataBase } from "./mongoDB.js";
+import authRouter from "./routes/auth.js";
 const __dirname = path.resolve();
 
 const SECRET = process.env.SECRET || "0241";
 const app = express();
 const port = process.env.PORT || 5000;
-const DBURI =
-  // "mongodb+srv://alamal:arslan@cluster0.bndh5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-  "mongodb+srv://alamalcomputers:arslan@cluster0.uxumv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-const connectToMongoDB = () => {
-  mongoose.connect(DBURI, () => {
-    console.log("connected to mongoDB Database");
-  });
-  mongoose.connection.on("error", (err) => {
-    console.log(err);
-  });
-};
 // const dev = "http://localhost:5000";
 // const baseURL =
 //   window.location.hostname.split(":")[0] === "localhost" ? dev : "";
 
-connectToMongoDB();
+connectWithDataBase();
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
@@ -58,6 +41,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use("/", express.static(path.join(__dirname, "./web/build")));
 
 paypal.configure({
@@ -66,245 +50,9 @@ paypal.configure({
   client_id: process.env.CLIENT_ID,
   client_secret: process.env.CLIENT_SECRET,
 });
-
 // Database Schema
-const signUpUser = mongoose.model("signup users", {
-  firstName: String,
-  lastName: String,
-  email: {
-    type: String,
-    trim: true,
-    lowercase: true,
-  },
-  password: String,
-  phoneNumber: String,
-  address: String,
-  seller: Boolean,
-
-  created: { type: Date, default: Date.now },
-});
-const sellProduct = mongoose.model("products", {
-  authorId: String,
-  authorName: String,
-
-  title: String,
-  description: String,
-  brand: String,
-  color: String,
-  productType: String,
-  processorName: String,
-  processorDetail: String,
-  price: String,
-  display: String,
-  displayDetails: String,
-  ram: String,
-  storage: String,
-  label: String,
-  imageURL1: String,
-  imageURL2: String,
-  imageURL3: String,
-  imageURL4: String,
-
-  created: { type: Date, default: Date.now },
-});
-const headersImages = mongoose.model("headers images", {
-  imageURL: String,
-
-  created: { type: Date, default: Date.now },
-});
-const orders = mongoose.model("client orders", {
-  clientId: String,
-  firstName: String,
-  lastName: String,
-  phoneNumber: String,
-  deliveryAddress: String,
-  googleLocation: String,
-  total: String,
-  arrayOfCart: Array,
-  status: { type: String, default: "pending" },
-
-  created: { type: Date, default: Date.now },
-});
-
-app.get("/", (req, res) => res.send("Hello World!"));
-
-app.get("/api/v1/auth/headers", (req, res) => {
-  try {
-    headersImages
-      .find({})
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("Some Error Occured");
-      });
-  } catch (error) {
-    res.status(500).send("Some Error Occured");
-  }
-});
-
-app.post(
-  "/api/v1/auth/signup",
-  [
-    body("firstName")
-      .isLength({ min: 3 })
-      .withMessage("First Name should be at least of 3 characters"),
-    body("lastName")
-      .isLength({ min: 3 })
-      .withMessage("Last Name should be at least of 3 characters"),
-    body("email").isEmail().withMessage("Please type a valid email"),
-    body("phoneNumber")
-      .isLength({ min: 10 })
-      .withMessage("Phone Number should be 11 integers long"),
-    body("address")
-      .isLength({ min: 18 })
-      .withMessage("Address should be at least 18 characters long"),
-    body("password1")
-      .isLength({ min: 8 })
-      .withMessage("must be at least 8 characters long")
-      .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/)
-      .withMessage(
-        "Must have at least one number, one lowercase and one uppercase letter"
-      ),
-    body("password2").custom((value, { req }) => {
-      if (value !== req.body.password1) {
-        throw new Error("Password should match");
-      }
-      return true;
-    }),
-    body("seller").isIn([true, false]).withMessage("Must be a boolean value"),
-  ],
-  (req, res) => {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      const errorMsg = error.errors[0].msg;
-      return res.status(400).send(errorMsg);
-    }
-
-    const {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      address,
-      password2,
-      seller,
-    } = req.body;
-    // console.log( {
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   phoneNumber,
-    //   address,
-    //   password2,
-    //   seller,
-    // });
-    // res.send( {
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   phoneNumber,
-    //   address,
-    //   password2,
-    //   seller,
-    // })
-
-    signUpUser.findOne({ email: email }, async (err, user) => {
-      if (err) {
-        return res.status(502).send("Server Error");
-      } else {
-        if (user) {
-          return res.status(403).send("User Already Exists");
-        } else {
-          const salt = await bcrypt.genSalt(10);
-          const securePass = await bcrypt.hash(password2, salt);
-          const newUser = await new signUpUser({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phoneNumber: phoneNumber,
-            address: address,
-            password: securePass,
-            seller: seller,
-          });
-          newUser
-            .save()
-            .then((result) => {
-              // console.log(result);
-              return res.send("New Account Created");
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(402).send("Fail in creating user account");
-            });
-        }
-      }
-    });
-  }
-);
-
-app.post(
-  "/api/v1/auth/login",
-  [
-    body("email").isEmail().withMessage("Please enter a valid email"),
-    body("password")
-      .isLength(1)
-      .withMessage("Password Required")
-      .isLength({ min: 8 })
-      .withMessage("Password should be 8 characters long"),
-  ],
-  (req, res) => {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      const errorMsg = error.errors[0].msg;
-      return res.status(400).send(errorMsg);
-    }
-    // console.log(req.body);
-    // res.send("Good");
-    const { email, password } = req.body;
-    signUpUser.findOne({ email: email }, (err, user) => {
-      if (err) {
-        return res.status(502).send("Server Error");
-      } else {
-        if (!user) {
-          return res.status(404).send("Email not found");
-        } else {
-          if (user) {
-            bcrypt.compare(password, user.password, (err, result) => {
-              if (err) {
-                return res.status(502).send("Server Error");
-              } else {
-                if (result) {
-                  var token = jwt.sign(
-                    {
-                      id: user._id,
-                      firstName: user.firstName,
-                      lastName: user.lastName,
-                      email: user.email,
-                      phoneNumber: user.phoneNumber,
-                      address: user.address,
-                      seller: user.seller,
-                    },
-                    SECRET
-                  );
-                  res.cookie("webTokenAlamal", token, {
-                    httpOnly: true,
-                    maxAge: 86400000, // 1 day age of web token
-                  });
-                  // console.log(token);
-                  res.send(user);
-                } else {
-                  return res.status(404).send("Incorrect Password");
-                }
-              }
-            });
-          }
-        }
-      }
-    });
-  }
-);
+// shifted
+app.use("/api/v1/auth", authRouter);
 
 app.get("/api/v1/search/products", (req, res) => {
   console.log(req.query.search);
@@ -520,16 +268,6 @@ app.post("/api/v1/post/product", upload.array("myfile", 4), (req, res) => {
   }
 });
 
-app.post("/api/v1/auth/logout", (req, res) => {
-  try {
-    res.cookie("webTokenAlamal", "", {
-      httpOnly: true,
-    });
-    res.send("GoodBye");
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-});
 app.post("/api/v1/paypal", (req, res) => {
   // console.log(req.body);
   global.order = req.body;
@@ -663,44 +401,6 @@ app.get("/cancel", (req, res) => {
     msg: "payment cancel",
   });
 });
-
-// app.post("/api/v1/post/order", (req, res) => {
-//   const {
-//     deliveryAddress,
-//     firstName,
-//     googleLocation,
-//     lastName,
-//     phoneNumber,
-//     total,
-//     arrayOfCart,
-//   } = req.body;
-//   try {
-//     const newOrder = new orders({
-//       deliveryAddress: deliveryAddress,
-//       firstName: firstName,
-//       googleLocation: googleLocation,
-//       lastName: lastName,
-//       phoneNumber: phoneNumber,
-//       total: total,
-//       clientId: req.body._decoded.id,
-//       arrayOfCart: arrayOfCart,
-//       status: "pending",
-//     });
-//     newOrder.save((err, data) => {
-//       if (err) {
-//         return res.status(500).send("Internal Server Error");
-//       } else {
-//         if (data) {
-//           return res.send(data);
-//         } else {
-//           return res.status(500).send("Data Not Found");
-//         }
-//       }
-//     });
-//   } catch (error) {
-//     return res.status(500).send("Internal Server Error");
-//   }
-// });
 
 app.get("/api/v1/user/orders", (req, res) => {
   try {
