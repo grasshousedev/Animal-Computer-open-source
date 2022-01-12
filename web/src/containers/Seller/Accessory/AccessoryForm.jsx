@@ -13,8 +13,22 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { showError } from "../../../utils";
 import Alert from "@material-ui/lab/Alert";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: "none",
+  },
+}));
 
 function AccessoryForm() {
+  const classes = useStyles();
   const state = useSelector((state) => state.auth.token);
   const dev = "http://localhost:5000";
   const baseURL =
@@ -37,10 +51,24 @@ function AccessoryForm() {
     },
 
     onSubmit: (values, { resetForm }) => {
+      if (productImages.length === 0) {
+        let err = {
+          response: {
+            data: "Upload is empty",
+          },
+        };
+        return setMyAlert({
+          ...myAlert,
+          saving: false,
+          success: false,
+          error: true,
+          message: err,
+        });
+      }
       if (productImages.length > 4 || productImages.length < 4) {
         let err = {
           response: {
-            data: "4 pictures required",
+            data: `4 pictures required you have ${productImages.length}`,
           },
         };
         return setMyAlert({
@@ -252,27 +280,32 @@ function AccessoryForm() {
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-              <input
-                type="file"
-                accept="image/*"
-                name="file"
-                id="file"
-                variant="outlined"
-                multiple
-                style={{
-                  marginTop: "20px",
-                  marginBottom: "14px",
-                  width: "100%",
-                }}
-                onChange={(e) => {
-                  setProductImages([]);
-                  for (let i = 0; i < e.target.files.length; i++) {
-                    const newImage = e.target.files[i];
-                    setProductImages((prevImage) => [...prevImage, newImage]);
-                  }
-                }}
-                required
-              />
+              <div className={classes.root}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="file"
+                  multiple
+                  type="file"
+                  onChange={(e) => {
+                    setProductImages([]);
+                    for (let i = 0; i < e.target.files.length; i++) {
+                      const newImage = e.target.files[i];
+                      setProductImages((prevImage) => [...prevImage, newImage]);
+                    }
+                  }}
+                />
+                <label htmlFor="file">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    startIcon={<CloudUploadIcon />}
+                  >
+                    Upload
+                  </Button>
+                </label>
+              </div>
             </Grid>
             <Button color="primary" variant="contained" fullWidth type="submit">
               {myAlert.saving ? (
