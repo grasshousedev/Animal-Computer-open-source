@@ -1,8 +1,6 @@
 import React from "react";
 import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
-import AdminRoute from "./components/AdminRoute";
-
 import Hoc from "./Hoc";
 import SignIn from "./containers/Auth/SignIn";
 import SignUp from "./containers/Auth/SignUp";
@@ -10,7 +8,6 @@ import Forgot from "./containers/Auth/Forgot";
 import Product from "./components/Product/Product";
 import ProductList from "./components/Product/ProductList";
 import ResetPassword from "./containers/Auth/ResetPassword";
-import Dashboard from "./containers/Admin/Dashboard";
 import Checkout from "./containers/Checkout/Checkout";
 import UserProfile from "./containers/Profile/UserProfile";
 import CartView from "./containers/CartView";
@@ -23,10 +20,8 @@ import Seller from "./containers/Seller/Seller";
 
 const BaseRouter = withRouter(({ location }) => {
   const token = useSelector((state) => state.auth.token);
-  // console.log(token);
   return (
     <Hoc>
-      {/* {location.pathname !== "/dashboard" ? ( */}
       <Layout>
         <Switch>
           <Route path="/" exact component={Home} />
@@ -69,11 +64,6 @@ const BaseRouter = withRouter(({ location }) => {
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </Layout>
-      {/* ) : (
-        <React.Fragment>
-          <AdminRoute path="/dashboard" exact component={Dashboard} />
-        </React.Fragment>
-      )} */}
     </Hoc>
   );
 });

@@ -13,7 +13,8 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(authCheckState());
-  });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

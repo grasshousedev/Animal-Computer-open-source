@@ -35,7 +35,11 @@ const useStyles = makeStyles((theme) => ({
 const Layout = (props) => {
   const classes = useStyles();
   const token = useSelector((state) => state.auth.token);
-  if (window.location === "/account" || window.location === "/checkout") {
+  if (
+    window.location === "/account" ||
+    window.location === "/seller" ||
+    window.location === "/checkout"
+  ) {
     if (!token) {
       history.push("/");
     }
