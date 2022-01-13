@@ -6,6 +6,7 @@ import { sellProduct } from "../models/product.js";
 
 const router = express.Router();
 
+// 1 Router
 router.get("/orders", (req, res) => {
   try {
     orders
@@ -21,6 +22,7 @@ router.get("/orders", (req, res) => {
   }
 });
 
+// 2 Router
 router.post("/changestatus", (req, res) => {
   try {
     const { orderId } = req.body;
@@ -44,6 +46,7 @@ router.post("/changestatus", (req, res) => {
   }
 });
 
+// 3 Router
 router.get("/getclientorders", (req, res) => {
   try {
     // console.log(req.body._decoded.id);
@@ -62,6 +65,7 @@ router.get("/getclientorders", (req, res) => {
   }
 });
 
+// 4 Router
 router.get("/getsellerproducts", (req, res) => {
   try {
     // console.log(req.body._decoded.id);
@@ -80,6 +84,7 @@ router.get("/getsellerproducts", (req, res) => {
   }
 });
 
+// 5 Router
 router.post("/update", (req, res) => {
   try {
     // console.log(req.body);
@@ -120,6 +125,7 @@ router.post("/update", (req, res) => {
   }
 });
 
+// 6 Router
 router.post("/passwordupdate", (req, res) => {
   try {
     if (req.body.new_password1 !== req.body.new_password2) {
