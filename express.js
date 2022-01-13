@@ -11,8 +11,8 @@ import verifyUser from "./middleware/verifyuser.js";
 import productRouter from "./routes/product.js";
 import paypalRouter from "./routes/paypal.js";
 import userRouter from "./routes/user.js";
-const __dirname = path.resolve();
 
+const __dirname = path.resolve();
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -32,17 +32,22 @@ app.use(
   })
 );
 
+// The first request response which will gives fronntend to user
 app.use("/", express.static(path.join(__dirname, "./web/build")));
 
-//  route auth
+//  Authentication Routes
 app.use("/api/v1/auth", authRouter);
 
+//  Product Routes
 app.use("/api/v1/product", productRouter);
 
+//  token Verification Routes
 app.use("/api/v1/tokenverify", verifyUser, verifyTokenRouter);
 
+//  Paypal Routes
 app.use("/api/v1/paypal", verifyUser, paypalRouter);
 
+//  User Routes
 app.use("/api/v1/user", verifyUser, userRouter);
 
 app.use("/**", (req, res) => {

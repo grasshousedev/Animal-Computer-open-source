@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+// 1 Router
 router.get("/headers", (req, res) => {
   try {
     headersImages
@@ -24,6 +25,7 @@ router.get("/headers", (req, res) => {
   }
 });
 
+// 2 Router
 router.post(
   "/signup",
   [
@@ -124,6 +126,7 @@ router.post(
   }
 );
 
+// 3 Router
 router.post(
   "/login",
   [
@@ -186,6 +189,7 @@ router.post(
   }
 );
 
+// 4 Router
 router.post("/logout", (req, res) => {
   try {
     res.cookie("webTokenAlamal", "", {
