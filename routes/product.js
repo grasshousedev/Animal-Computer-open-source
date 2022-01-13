@@ -8,6 +8,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const router = express.Router();
 
+// 1 Router
 router.get("/", (req, res) => {
   try {
     // console.log(req.query[0]);
@@ -30,6 +31,7 @@ router.get("/", (req, res) => {
   }
 });
 
+// 2 Router
 router.get("/search/products", (req, res) => {
   console.log(req.query.search);
   sellProduct
@@ -47,6 +49,7 @@ router.get("/search/products", (req, res) => {
     });
 });
 
+// 3 Router
 router.get("/special/products", (req, res) => {
   // console.log('====================================');
   // console.log(req.query);
@@ -67,6 +70,7 @@ router.get("/special/products", (req, res) => {
   }
 });
 
+// 4 Router
 router.get("/params/products", (req, res) => {
   // console.log('====================================');
   // console.log(req.query);
@@ -87,6 +91,7 @@ router.get("/params/products", (req, res) => {
   }
 });
 
+// 5 Router
 router.post(
   "/post/product",
   verifyUser,

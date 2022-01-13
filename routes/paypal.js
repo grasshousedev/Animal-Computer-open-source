@@ -14,6 +14,7 @@ paypal.configure({
   client_secret: process.env.CLIENT_SECRET,
 });
 
+// 1 Router
 router.post("/", verifyUser, (req, res) => {
   // console.log(req.body);
   global.order = req.body;
@@ -83,6 +84,7 @@ router.post("/", verifyUser, (req, res) => {
   });
 });
 
+// 2 Router
 router.get("/success", verifyUser, (req, res) => {
   console.log(req.query);
   var paymentId = req.query.paymentId;
@@ -140,6 +142,7 @@ router.get("/success", verifyUser, (req, res) => {
   });
 });
 
+// 3 Router
 router.get("/cancel", verifyUser, (req, res) => {
   console.log("cancel");
   res.status(201).send({

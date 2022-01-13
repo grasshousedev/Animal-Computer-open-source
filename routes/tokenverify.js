@@ -3,6 +3,7 @@ import { signUpUser } from "../models/signup.js";
 
 const router = express.Router();
 
+// 1 Router
 router.get("/", (req, res) => {
   signUpUser.findOne({ _id: req.body._decoded?.id }, (err, user) => {
     if (err) {
